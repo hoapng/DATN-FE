@@ -1,3 +1,5 @@
-export default function Home() {
-  return <div className="text-3xl font-bold underline">Hello, Next.js!</div>;
-}
+const App: React.FC = () => {
+  return <>Hello</>;
+};
+
+export default App;
