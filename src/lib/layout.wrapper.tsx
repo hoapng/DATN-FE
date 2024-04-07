@@ -1,30 +1,47 @@
 "use client";
+import React from "react";
+import {
+  AppstoreOutlined,
+  BarChartOutlined,
+  CloudOutlined,
+  ShopOutlined,
+  TeamOutlined,
+  UploadOutlined,
+  UserOutlined,
+  VideoCameraOutlined,
+} from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Layout, Menu, theme } from "antd";
+import { useRouter } from "next/navigation";
 
 const { Header, Content, Footer, Sider } = Layout;
 
-type MenuItem = Required<MenuProps>["items"][number];
-
-function getItem(
-  label: React.ReactNode,
-  key: React.Key,
-  icon?: React.ReactNode,
-  children?: MenuItem[],
-  type?: "group"
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-    type,
-  } as MenuItem;
-}
+// const items: MenuProps["items"] = [
+//   UserOutlined,
+//   VideoCameraOutlined,
+//   UploadOutlined,
+//   BarChartOutlined,
+//   CloudOutlined,
+//   AppstoreOutlined,
+//   TeamOutlined,
+//   ShopOutlined,
+// ].map((icon, index) => ({
+//   key: String(index + 1),
+//   icon: React.createElement(icon),
+//   label: `nav ${index + 1}`,
+// }));
 
 const items: MenuProps["items"] = [
-  getItem("Option 13", "13"),
-  getItem("Option 14", "14"),
+  {
+    key: "home",
+    icon: <UserOutlined />,
+    label: "Home",
+  },
+  {
+    key: "profile",
+    icon: <UserOutlined />,
+    label: "Profile",
+  },
 ];
 
 export default function LayoutWrapper({
@@ -32,54 +49,41 @@ export default function LayoutWrapper({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
   return (
-    <Layout>
-      {/* <Header style={{ display: "flex", alignItems: "center" }}>
-          <div className="demo-logo" />
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            defaultSelectedKeys={["2"]}
-            items={items1}
-            style={{ flex: 1, minWidth: 0 }}
-          />
-        </Header> */}
-      <Content
-      // style={{ padding: "0 48px" }}
+    <Layout hasSider>
+      <Sider
+        style={{
+          overflow: "auto",
+          height: "100vh",
+          position: "fixed",
+          left: 0,
+          top: 0,
+          bottom: 0,
+          background: colorBgContainer,
+        }}
       >
-        <Layout
-          className="h-screen"
-          // style={{
-          //   // padding: "24px 0",
-          //   background: colorBgContainer,
-          //   borderRadius: borderRadiusLG,
-          // }}
-        >
-          <Sider
-            // style={{ background: colorBgContainer }}
-            width={300}
-          >
-            <Menu
-              // onClick={onClick}
-              mode="inline"
-              defaultSelectedKeys={["1"]}
-              defaultOpenKeys={["sub1"]}
-              style={{ height: "100%" }}
-              items={items}
-            />
-          </Sider>
-          <Content style={{ padding: "0 24px", minHeight: 280 }}>
-            {children}
-          </Content>
-          <Sider style={{ background: "red" }} width={200}>
-            Right part
-          </Sider>
-        </Layout>
-      </Content>
+        <Menu
+          activeKey=""
+          mode="inline"
+          items={items}
+          onClick={({ item, key, keyPath, domEvent }) => {
+            if (key === "home") {
+              router.push(`/`);
+            } else router.push(`/${key}`);
+          }}
+        />
+      </Sider>
+      <Layout style={{ marginLeft: 200 }}>
+        <Content style={{ margin: "24px auto", overflow: "initial" }}>
+          {children}
+        </Content>
+      </Layout>
     </Layout>
   );
 }
