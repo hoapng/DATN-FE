@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ant-design/cssinjs": "1.17.2",
+    "@ant-design/icons": "^5.3.6",
     "antd": "5.11.1",
     "next": "14.0.2",
     "next-auth": "4.24.7",

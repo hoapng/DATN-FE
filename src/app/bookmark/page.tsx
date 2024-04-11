@@ -42,38 +42,26 @@ const Profile: React.FC = async (props: any) => {
     url: `http://localhost:8000/api/v1/users/${props.params.slug}`,
     method: "GET",
   });
-  const tweets = await sendRequest({
-    url: `http://localhost:8000/api/v1/tweets`,
+  const bookmarks = await sendRequest({
+    url: `http://localhost:8000/api/v1/bookmarks`,
     method: "GET",
     queryParams: {
       current: 1,
       pageSize: 5,
-      createdBy: props.params.slug,
-      populate: "createdBy",
+      createdBy: session?.user._id,
+      populate: "tweet,tweet.createdBy",
       fields:
-        "createdBy._id, createdBy.name, createdBy.email, createdBy.avatar",
+        "tweet.createdBy._id,tweet.createdBy.name,tweet.createdBy.email,tweet.createdBy.avatar",
+    },
+    headers: {
+      Authorization: `Bearer ${session?.access_token}`,
     },
   });
+  const tweets = bookmarks.data.result.map((bookmark) => bookmark.tweet);
+  console.log(tweets);
   return (
     <>
-      <Card style={{ padding: "auto", justifyItems: "center" }}>
-        <Meta
-          avatar={
-            <Avatar
-              size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
-              icon={<AntDesignOutlined />}
-              src={user?.data?.avatar}
-            />
-          }
-          title={
-            <>
-              <p>{user?.data?.name}</p>
-              <p className="font-light text-sm">{user?.data?.email}</p>
-            </>
-          }
-        />
-      </Card>
-      <Post tweets={tweets?.data?.result} />
+      <Post tweets={tweets} />
     </>
   );
 };

@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import StyledComponentsRegistry from "@/lib/antd.registry";
 import "./globals.css";
 import LayoutWrapper from "@/lib/layout.wrapper";
+import NextAuthWrapper from "@/lib/next.auth.wrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <StyledComponentsRegistry>
-          <LayoutWrapper>{children}</LayoutWrapper>
+          <NextAuthWrapper>
+            <LayoutWrapper>{children}</LayoutWrapper>
+          </NextAuthWrapper>
         </StyledComponentsRegistry>
       </body>
     </html>
