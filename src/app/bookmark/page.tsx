@@ -58,7 +58,6 @@ const Profile: React.FC = async (props: any) => {
     },
   });
   const tweets = bookmarks.data.result.map((bookmark) => bookmark.tweet);
-  console.log(tweets);
   return (
     <>
       <Post tweets={tweets} />

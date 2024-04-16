@@ -77,7 +77,7 @@ export default function LayoutWrapper({
       icon: <StarOutlined />,
       label: "Bookmark",
       onClick: () => {
-        router.push(`/bookmark/${session?.user._id}`);
+        router.push(`/bookmark`);
       },
     },
   ];
