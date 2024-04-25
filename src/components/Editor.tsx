@@ -5,7 +5,8 @@ import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
-export default function Editor({ value, onChange }) {
+export default function Editor(props: any) {
+  const { value, onChange } = props;
   const modules = {
     toolbar: [
       [{ header: [1, 2, false] }],

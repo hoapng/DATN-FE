@@ -4,10 +4,10 @@ import Editor from "@/components/Editor";
 import React, { useCallback, useRef, useState } from "react";
 import { Mentions } from "antd";
 import debounce from "lodash/debounce";
-import { PlusOutlined } from "@ant-design/icons";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, DatePicker, Form, Input, Select, Upload } from "antd";
 import { sendRequest } from "@/utils/api";
-import { error } from "console";
+import type { GetProp, UploadProps } from "antd";
 
 const { TextArea } = Input;
 
@@ -26,6 +26,14 @@ const normFile = (e: any) => {
     return e;
   }
   return e?.fileList;
+};
+
+type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
+
+const getBase64 = (img: FileType, callback: (url: string) => void) => {
+  const reader = new FileReader();
+  reader.addEventListener("load", () => callback(reader.result as string));
+  reader.readAsDataURL(img);
 };
 
 export default function CreatePost() {
@@ -86,6 +94,37 @@ export default function CreatePost() {
     debounceLoadGithubUsers(search);
   };
 
+  const [uploading, setUploading] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+
+  const handleChange: UploadProps["onChange"] = (info) => {
+    if (info.file.status === "uploading") {
+      setUploading(true);
+      return;
+    }
+    if (info.file.status === "done") {
+      // Get this url from response in real world.
+      getBase64(info.file.originFileObj as FileType, (url) => {
+        setUploading(false);
+        setImageUrl(url);
+      });
+    }
+  };
+
+  const handleUploadFiles = async ({
+    file,
+    onSuccess,
+    onError,
+  }: {
+    file: any;
+    onSuccess: any;
+    onError: any;
+  }) => {
+    setTimeout(() => {
+      onSuccess("ok");
+    }, 1000);
+  };
+
   return (
     <>
       <Form layout="vertical">
@@ -126,11 +165,18 @@ export default function CreatePost() {
           valuePropName="fileList"
           getValueFromEvent={normFile}
         >
-          <Upload action="/upload.do" listType="picture-card">
-            <button style={{ border: 0, background: "none" }} type="button">
-              <PlusOutlined />
+          <Upload
+            multiple={true}
+            name="slider"
+            listType="picture-card"
+            className="avatar-uploader"
+            customRequest={handleUploadFiles}
+            onChange={(info) => handleChange(info)}
+          >
+            <div>
+              {uploading ? <LoadingOutlined /> : <PlusOutlined />}
               <div style={{ marginTop: 8 }}>Upload</div>
-            </button>
+            </div>
           </Upload>
         </Form.Item>
 
