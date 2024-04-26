@@ -1,13 +1,67 @@
 "use client";
 // import ReactQuill from "react-quill";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+const ReactQuill = dynamic(
+  async () => {
+    const { default: RQ } = await import("react-quill");
+
+    return ({ forwardedRef, ...props }) => <RQ ref={forwardedRef} {...props} />;
+  },
+  { ssr: false }
+);
 import * as nsfwjs from "nsfwjs";
+import { message } from "antd";
 
 export default function Editor(props: any) {
   const { value, onChange } = props;
+  const reactQuillRef = useRef<typeof ReactQuill>();
+  const imageHandler = useCallback(async () => {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.click();
+    input.onchange = async () => {
+      var file: any = input && input.files ? input.files[0] : null;
+      console.log("file", file);
+      let reader = new FileReader();
+
+      reader.onload = async (e) => {
+        let img = new Image();
+        img.src = e.target.result;
+
+        console.log("e", e);
+
+        img.onload = async function () {
+          const model = await nsfwjs.load();
+          const predictions = await model.classify(img);
+          let isSafe = predictions.every((pred) => {
+            if (
+              (pred.className === "Porn" ||
+                pred.className === "Sexy" ||
+                pred.className === "Hentai") &&
+              pred.probability > 0.01
+            )
+              return false;
+            return true;
+          });
+
+          if (isSafe) {
+            let quillObj = reactQuillRef.current?.getEditor();
+            console.log(quillObj);
+            const range = quillObj.getSelection();
+            quillObj.editor.insertEmbed(range.index, "image", e.target.result);
+          } else {
+            message.error("Hình ảnh không phù hợp!");
+          }
+        };
+      };
+
+      reader.readAsDataURL(file);
+    };
+  }, []);
+
   const modules = {
     toolbar: {
       container: [
@@ -28,33 +82,47 @@ export default function Editor(props: any) {
     },
   };
 
-  async function imageHandler() {
-    let fileInput = document.createElement("input");
-    fileInput.setAttribute("type", "file");
-    fileInput.click();
+  async function imageHandler2() {
+    const input = document.createElement("input");
 
-    fileInput.onchange = async () => {
-      let file = fileInput.files[0];
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.click();
+    input.onchange = async () => {
+      var file: any = input && input.files ? input.files[0] : null;
       let reader = new FileReader();
 
       reader.onload = async (e) => {
         let img = new Image();
         img.src = e.target.result;
 
+        console.log("e", e);
+
         img.onload = async function () {
           const model = await nsfwjs.load();
           const predictions = await model.classify(img);
-          let isSafe = predictions.every(
-            (pred) => pred.className !== "Porn" && pred.className !== "Sexy"
-          );
+          console.log("predictions", predictions);
+          // let isSafe = predictions.every((pred) => {
+          //   if (
+          //     (pred.className === "Porn" ||
+          //       pred.className !== "Sexy" ||
+          //       pred.className !== "Hentai") &&
+          //     pred.probability < 0.01
+          //   )
+          //     return true;
+          //   return true;
+          // });
 
-          if (isSafe) {
-            let quill = reactQuillRef.getEditor();
-            let range = quill.getSelection();
-            quill.insertEmbed(range.index, "image", e.target.result);
-          } else {
-            alert("Hình ảnh không phù hợp!");
-          }
+          // console.log("isSafe", isSafe);
+
+          // if (isSafe) {
+          let quillObj = reactQuillRef.current?.getEditor();
+          console.log(quillObj);
+          const range = quillObj.getSelection();
+          quillObj.editor.insertEmbed(range.index, "image", e.target.result);
+          // } else {
+          //   alert("Hình ảnh không phù hợp!");
+          // }
         };
       };
 
@@ -65,9 +133,10 @@ export default function Editor(props: any) {
   return (
     <div className="content">
       <ReactQuill
-        ref={(el) => {
-          reactQuillRef = el;
-        }}
+        // ref={(el) => {
+        //   reactQuillRef = el;
+        // }}
+        forwardedRef={reactQuillRef}
         value={value}
         theme={"snow"}
         onChange={onChange}
