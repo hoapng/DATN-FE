@@ -1,150 +1,45 @@
 "use client";
 import React from "react";
-import {
-  AntDesignOutlined,
-  AppstoreOutlined,
-  BarChartOutlined,
-  CloudOutlined,
-  HomeOutlined,
-  LoginOutlined,
-  LogoutOutlined,
-  ShopOutlined,
-  StarOutlined,
-  TeamOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Avatar, Button, Divider, Layout, Menu, Typography, theme } from "antd";
-import { useRouter } from "next/navigation";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { Breadcrumb, Button, Form, Input, Layout, Menu, theme } from "antd";
+import Link from "next/link";
+import { SearchOutlined } from "@ant-design/icons";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Footer } = Layout;
 
-export default function LayoutWrapper({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const router = useRouter();
-  const { data: session } = useSession();
+const items = new Array(15).fill(null).map((_, index) => ({
+  key: index + 1,
+  label: `nav ${index + 1}`,
+}));
 
-  const itemsAccount: MenuProps["items"] = [
-    {
-      key: "info",
-      icon: (
-        <Avatar
-          size="default"
-          icon={<AntDesignOutlined />}
-          src={session?.user?.avatar}
-        />
-      ),
-      label: session?.user.email,
-      onClick: () => {
-        router.push(`/profile/${session?.user._id}`);
-      },
-    },
-    {
-      key: "logout",
-      icon: <LogoutOutlined />,
-      label: "Logout",
-      onClick: () => {
-        signOut();
-      },
-    },
-  ];
-
-  const items: MenuProps["items"] = [
-    {
-      key: "home",
-      icon: <HomeOutlined />,
-      label: "Home",
-      onClick: () => {
-        router.push("/");
-      },
-    },
-    {
-      key: "profile",
-      icon: <UserOutlined />,
-      label: "Profile",
-      onClick: () => {
-        router.push(`/profile/${session?.user._id}`);
-      },
-    },
-    {
-      key: "bookmark",
-      icon: <StarOutlined />,
-      label: "Bookmark",
-      onClick: () => {
-        router.push(`/bookmark`);
-      },
-    },
-  ];
-
+const App: React.FC = ({ children }: { children: React.ReactNode }) => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const { Text } = Typography;
-
   return (
-    <Layout hasSider>
-      <Sider
-        style={{
-          overflow: "auto",
-          height: "100vh",
-          position: "fixed",
-          left: 0,
-          top: 0,
-          bottom: 0,
-          background: colorBgContainer,
-          paddingTop: 20,
-        }}
-      >
-        {session ? (
-          <>
-            <Menu
-              style={{ borderInlineEnd: "none" }}
-              activeKey=""
-              mode="inline"
-              items={session ? itemsAccount : []}
-            />
-            <Divider />
-            <Menu
-              style={{ borderInlineEnd: "none" }}
-              mode="inline"
-              items={session ? items : []}
-            />
-            <div className="my-6 mx-12">
-              <Button
-                type="primary"
-                shape="round"
-                icon={<UploadOutlined />}
-                size="large"
-                block
-              >
-                POST
-              </Button>
-            </div>
-          </>
-        ) : (
-          <div className="flex flex-col gap-5 px-6">
-            <Button
-              type="primary"
-              shape="round"
-              icon={<LoginOutlined />}
-              size="large"
-              onClick={() => signIn()}
-            >
-              Login
-            </Button>
-          </div>
-        )}
-      </Sider>
-      <Layout style={{ marginLeft: 200, minHeight: "100vh" }}>
-        <Content>{children}</Content>
-      </Layout>
+    <Layout>
+      <Header style={{ display: "flex", alignItems: "center" }}>
+        <Link
+          href="/"
+          className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold"
+        >
+          <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white">
+            Hoa's
+          </span>
+          Blog
+        </Link>
+        <Form>
+          <Form.Item>
+            <Input prefix={<SearchOutlined />} className="hidden lg:inline" />
+          </Form.Item>
+        </Form>
+        <Button>
+          <SearchOutlined />
+        </Button>
+      </Header>
+      <Content style={{ padding: "0 48px" }}>{children}</Content>
     </Layout>
   );
-}
+};
+
+export default App;

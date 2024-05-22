@@ -24,15 +24,11 @@ export default function Editor(props: any) {
     input.click();
     input.onchange = async () => {
       var file: any = input && input.files ? input.files[0] : null;
-      console.log("file", file);
       let reader = new FileReader();
 
       reader.onload = async (e) => {
         let img = new Image();
         img.src = e.target.result;
-
-        console.log("e", e);
-
         img.onload = async function () {
           const model = await nsfwjs.load();
           const predictions = await model.classify(img);
@@ -49,7 +45,6 @@ export default function Editor(props: any) {
 
           if (isSafe) {
             let quillObj = reactQuillRef.current?.getEditor();
-            console.log(quillObj);
             const range = quillObj.getSelection();
             quillObj.editor.insertEmbed(range.index, "image", e.target.result);
           } else {
@@ -80,6 +75,11 @@ export default function Editor(props: any) {
         image: imageHandler,
       },
     },
+  };
+
+  const handleImagePaste = (e) => {
+    const items = e.clipboardData.items[0].getData(); // Lấy tệp ảnh từ clipboard;
+    console.log(items);
   };
 
   async function imageHandler2() {
@@ -140,6 +140,7 @@ export default function Editor(props: any) {
         value={value}
         theme={"snow"}
         onChange={onChange}
+        // onPaste={handleImagePaste}
         modules={modules}
       />
     </div>

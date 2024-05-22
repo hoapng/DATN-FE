@@ -4,6 +4,7 @@ import StyledComponentsRegistry from "@/lib/antd.registry";
 import "./globals.css";
 import LayoutWrapper from "@/lib/layout.wrapper";
 import NextAuthWrapper from "@/lib/next.auth.wrapper";
+import Header from "@/components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <StyledComponentsRegistry>
           <NextAuthWrapper>
-            <LayoutWrapper>{children}</LayoutWrapper>
+            <Header />
+            {children}
           </NextAuthWrapper>
         </StyledComponentsRegistry>
       </body>

@@ -1,16 +1,17 @@
 "use client";
 import "react-quill/dist/quill.snow.css";
 import Editor from "@/components/Editor";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Image as Image2, Mentions, Modal, message } from "antd";
 import debounce from "lodash/debounce";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, DatePicker, Form, Input, Select, Upload } from "antd";
 import { sendRequest, sendRequestFile } from "@/utils/api";
 import type { FormProps, GetProp, UploadProps } from "antd";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import * as nsfwjs from "nsfwjs";
 import { useRouter } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
 
 export enum TweetType {
   Post = "Post",
@@ -36,7 +37,8 @@ const getBase64 = (img: FileType, callback: (url: string) => void) => {
   reader.readAsDataURL(img);
 };
 
-export default function CreatePost() {
+const EditPost = ({ params }) => {
+  const { slug } = params;
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
@@ -137,7 +139,16 @@ export default function CreatePost() {
           Authorization: `Bearer ${session?.access_token}`,
         },
       });
-      setFile(res.data.fileNames);
+      setFile(
+        res.data.fileNames.map((item: any) => {
+          return {
+            uid: uuidv4(),
+            name: item,
+            status: "done",
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/images/uploadedFiles/${item}`,
+          };
+        })
+      );
       onSuccess("ok");
     } catch (error) {
       //@ts-ignore
@@ -178,12 +189,13 @@ export default function CreatePost() {
         img.onload = async function () {
           const model = await nsfwjs.load();
           const predictions = await model.classify(img);
+          console.log(predictions);
           isSafe = predictions.every((pred) => {
-            if (pred.className === "Porn" && pred.probability > 0.01)
+            if (pred.className === "Porn" && pred.probability > 0.2)
               return false;
-            if (pred.className === "Hentai" && pred.probability > 0.01)
+            if (pred.className === "Hentai" && pred.probability > 0.2)
               return false;
-            if (pred.className === "Sexy" && pred.probability > 0.01)
+            if (pred.className === "Sexy" && pred.probability > 0.2)
               return false;
             return true;
           });
@@ -207,19 +219,10 @@ export default function CreatePost() {
   const router = useRouter();
 
   const onFinish: FormProps["onFinish"] = async (values) => {
-    // console.log("Success:", {
-    //   ...values,
-    //   hashtags: values.hashtags
-    //     ? values.hashtags
-    //         .trim()
-    //         .split("#")
-    //         .map((hashtag: any) => hashtag.trim())
-    //     : [],
-    //   files: file,
-    // });
+    console.log("Success:", values);
     const res = await sendRequest({
-      url: "http://localhost:8000/api/v1/tweets",
-      method: "POST",
+      url: `http://localhost:8000/api/v1/tweets/${slug}`,
+      method: "PATCH",
       body: {
         ...values,
         hashtags: values.hashtags
@@ -228,7 +231,7 @@ export default function CreatePost() {
               .split("#")
               .map((hashtag: any) => hashtag.trim())
           : [],
-        files: file,
+        files: file.length === 0 ? [] : file.map((item) => item.name),
       },
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
@@ -242,16 +245,52 @@ export default function CreatePost() {
     }
   };
 
+  useEffect(() => {
+    fetchTweetById();
+  }, []);
+
+  const [form] = Form.useForm();
+  const fetchTweetById = async () => {
+    const res = await sendRequest({
+      url: `http://localhost:8000/api/v1/tweets/${slug}`,
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${session?.access_token}`,
+      },
+      nextOption: {
+        cache: "no-store",
+      },
+    });
+    if (res.data) {
+      console.log({
+        ...res.data,
+        hashtags: res.data.hashtags ? res.data.hashtags.join(" #") : [],
+      });
+      form.setFieldsValue({
+        ...res.data,
+        hashtags: res.data.hashtags ? res.data.hashtags.join(" #") : [],
+      });
+      const files = res.data.files.map((item: any) => {
+        return {
+          uid: uuidv4(),
+          name: item,
+          status: "done",
+          url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/images/uploadedFiles/${item}`,
+        };
+      });
+      setFile(files);
+    }
+  };
+
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
-      <h1 className="text-center text-3xl my-7 font-semibold">Create a post</h1>
-      <Form onFinish={onFinish} layout="vertical">
+      <h1 className="text-center text-3xl my-7 font-semibold">Edit post</h1>
+      <Form onFinish={onFinish} layout="vertical" form={form}>
         <Form.Item label="Select" name="type">
-          <Select>
+          <Select disabled>
             <Select.Option value={TweetType.News}>News</Select.Option>
             <Select.Option value={TweetType.Question}>Question</Select.Option>
             <Select.Option value={TweetType.Review}>Review</Select.Option>
-            <Select.Option value={TweetType.Tips}>Tips</Select.Option>
           </Select>
         </Form.Item>
 
@@ -286,7 +325,7 @@ export default function CreatePost() {
           <Upload
             multiple={false}
             maxCount={1}
-            // fileList={fileList}
+            fileList={file}
             name="slider"
             listType="picture-card"
             className="avatar-uploader"
@@ -333,4 +372,5 @@ export default function CreatePost() {
       )}
     </div>
   );
-}
+};
+export default EditPost;
