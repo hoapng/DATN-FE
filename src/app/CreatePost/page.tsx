@@ -179,11 +179,11 @@ export default function CreatePost() {
           const model = await nsfwjs.load();
           const predictions = await model.classify(img);
           isSafe = predictions.every((pred) => {
-            if (pred.className === "Porn" && pred.probability > 0.01)
+            if (pred.className === "Porn" && pred.probability > 0.2)
               return false;
-            if (pred.className === "Hentai" && pred.probability > 0.01)
+            if (pred.className === "Hentai" && pred.probability > 0.2)
               return false;
-            if (pred.className === "Sexy" && pred.probability > 0.01)
+            if (pred.className === "Sexy" && pred.probability > 0.2)
               return false;
             return true;
           });
@@ -256,7 +256,12 @@ export default function CreatePost() {
         </Form.Item>
 
         <Form.Item label="Title" name="title">
-          <Input />
+          <Input
+            count={{
+              show: true,
+              max: 280,
+            }}
+          />
         </Form.Item>
 
         {/* <Form.Item label="Trending" name="hashtags">

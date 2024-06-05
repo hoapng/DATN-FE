@@ -37,7 +37,7 @@ export default function Editor(props: any) {
               (pred.className === "Porn" ||
                 pred.className === "Sexy" ||
                 pred.className === "Hentai") &&
-              pred.probability > 0.01
+              pred.probability > 0.2
             )
               return false;
             return true;

@@ -42,6 +42,7 @@ const EditPost = ({ params }) => {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
+  const [data, setData] = useState({});
   const ref = useRef<string>();
 
   const loadGithubUsers = async (key: string) => {
@@ -220,6 +221,11 @@ const EditPost = ({ params }) => {
 
   const onFinish: FormProps["onFinish"] = async (values) => {
     console.log("Success:", values);
+    if (session?.user._id !== data.createdBy) {
+      message.error("Bạn không thể sửa");
+      return;
+    }
+
     const res = await sendRequest({
       url: `http://localhost:8000/api/v1/tweets/${slug}`,
       method: "PATCH",
@@ -239,7 +245,7 @@ const EditPost = ({ params }) => {
     });
     if (res.data) {
       message.success(res.message);
-      router.push("/");
+      router.push(`/Post/${slug}`);
     } else {
       message.error(res.message);
     }
@@ -262,10 +268,15 @@ const EditPost = ({ params }) => {
       },
     });
     if (res.data) {
-      console.log({
-        ...res.data,
-        hashtags: res.data.hashtags ? res.data.hashtags.join(" #") : [],
-      });
+      // console.log({
+      //   ...res.data,
+      //   hashtags: res.data.hashtags ? res.data.hashtags.join(" #") : [],
+      // });
+      // if (session?.user._id !== res.data._id) {
+      //   message.warning("Bạn không thể chỉnh sửa bài viết này");
+      //   router.push(`/Post/${slug}`);
+      // }
+      setData(res.data);
       form.setFieldsValue({
         ...res.data,
         hashtags: res.data.hashtags ? res.data.hashtags.join(" #") : [],
@@ -295,7 +306,12 @@ const EditPost = ({ params }) => {
         </Form.Item>
 
         <Form.Item label="Title" name="title">
-          <Input />
+          <Input
+            count={{
+              show: true,
+              max: 280,
+            }}
+          />
         </Form.Item>
 
         {/* <Form.Item label="Trending" name="hashtags">
