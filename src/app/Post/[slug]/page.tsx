@@ -7,6 +7,8 @@ import { sendRequest } from "@/utils/api";
 import { Badge, Button } from "flowbite-react";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
+import Filter from "bad-words";
+import { badWords, blackList } from "vn-badwords";
 
 const getData = async (slug: string) => {
   const res = await sendRequest({
@@ -49,6 +51,20 @@ const getSamePosts = async (slug: string) => {
   }
 };
 
+const getBadWords = async () => {
+  const res = await sendRequest({
+    url: `http://localhost:8000/api/v1/badwords`,
+    method: "GET",
+    nextOption: {
+      cache: "no-store",
+    },
+  });
+
+  if (res.data && res.data.result) {
+    return res.data.result.map((x: any) => x.word);
+  }
+};
+
 const BlogDetails = async ({ params }) => {
   const { slug } = params;
 
@@ -57,6 +73,13 @@ const BlogDetails = async ({ params }) => {
   const post = await getData(slug);
 
   const samePosts = await getSamePosts(slug);
+
+  const badWordList = await getBadWords();
+
+  const customFilter = new Filter({
+    list: badWordList,
+    splitRegex: /(?:(?<= )|(?= )|(?<=<)|(?=<)|(?<=>)|(?=>)|(?<=&)|(?=&))/g,
+  });
 
   return (
     <div className="w-full px-0 md:px-10 py-8 2xl:px-20">
@@ -122,7 +145,13 @@ const BlogDetails = async ({ params }) => {
           {post.content ? (
             <div
               className="content"
-              dangerouslySetInnerHTML={{ __html: post?.content }}
+              dangerouslySetInnerHTML={{
+                __html: customFilter.clean(post?.content),
+                // __html: badWords(post?.content, {
+                //   replacement: "*",
+                //   blackList: (defaultList) => [...badWordList],
+                // }),
+              }}
             />
           ) : (
             <></>

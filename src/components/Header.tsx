@@ -89,6 +89,9 @@ export default function Header() {
         >
           <Link href={`/Profile/${session?.user._id}`}>Profile</Link>
         </Navbar.Link>
+        <Navbar.Link active={path === "/Market"} as={"div"}>
+          <Link href="/Market">Market</Link>
+        </Navbar.Link>
         {session ? (
           <Navbar.Link active={path === "/CreatePost"} as={"div"}>
             <Link href="/CreatePost">Write A Post</Link>
