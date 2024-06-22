@@ -1,10 +1,9 @@
 "use client";
-
-import { SearchOutlined } from "@ant-design/icons";
 import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import SearchBar from "./SearchBar";
 
 export default function Header() {
   const { data: session } = useSession();
@@ -20,19 +19,9 @@ export default function Header() {
         </span>
         Blog
       </Link>
-      <form>
-        <TextInput
-          type="text"
-          placeholder="Search..."
-          rightIcon={SearchOutlined}
-          className="hidden lg:inline"
-          //   value={searchTerm}
-          //   onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </form>
-      <Button className="w-12 h-10 lg:hidden" color="gray" pill>
-        <SearchOutlined />
-      </Button>
+
+      <SearchBar />
+
       <div className="flex gap-2 md:order-2">
         {/* <Button
           className="w-12 h-10 hidden sm:inline"
