@@ -1,24 +1,31 @@
 "use client";
 
 import { sendRequest } from "@/utils/api";
-import { TextInput } from "flowbite-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Input } from "antd";
 
 interface Post {
+  userName: string;
   _id: string;
-  id: string;
   title: string;
+  createdBy: string;
 }
 
-interface ApiResponse {
+interface ApiPostResponse {
   data: {
+    name: { result: Post[]; meta: { total: number } };
     result: Post[];
     meta: {
       total: number;
     };
+  };
+}
+
+interface ApiUserResponse {
+  data: {
+    name: string;
   };
 }
 
@@ -48,29 +55,60 @@ export default function SearchBar() {
 
   const fetchPosts = async () => {
     setIsLoading(true);
-    const res = await sendRequest<ApiResponse>({
-      url: `http://localhost:8000/api/v1/tweets`,
-      method: "GET",
-      queryParams: {
-        current: current,
-        pageSize: pageSize,
-        sort: sortQuery,
-        ...filter,
-      },
-      nextOption: {
-        cache: "no-store",
-      },
-      headers: {
-        Authorization: `Bearer ${session?.access_token}`,
-      },
-    });
-    console.log(res.data.result);
-    if (res && res.data) {
-      setListPosts(res.data.result);
-      setTotal(res.data.meta.total);
+
+    try {
+      const res = await sendRequest<ApiPostResponse>({
+        url: `http://localhost:8000/api/v1/tweets`,
+        method: "GET",
+        queryParams: {
+          current: current,
+          pageSize: pageSize,
+          sort: sortQuery,
+          ...filter,
+        },
+        nextOption: {
+          cache: "no-store",
+        },
+        headers: {
+          Authorization: `Bearer ${session?.access_token}`,
+        },
+      });
+
+      if (res && res.data && res.data.result) {
+        const posts = res.data.result;
+
+        const postsWithUserNames = await Promise.all(
+          posts.map(async (post) => {
+            const userRes = await sendRequest<ApiUserResponse>({
+              url: `http://localhost:8000/api/v1/users/${post.createdBy}`,
+              method: "GET",
+              nextOption: {
+                cache: "no-store",
+              },
+              headers: {
+                Authorization: `Bearer ${session?.access_token}`,
+              },
+            });
+
+            if (userRes && userRes.data && userRes.data.name) {
+              post.userName = userRes.data.name;
+            }
+
+            return post;
+          })
+        );
+
+        setListPosts(postsWithUserNames);
+        setTotal(res.data.meta.total);
+      }
+    } catch (error) {
+      console.error("Error fetching posts:", error);
     }
+
     setIsLoading(false);
   };
+
+  console.log(listPosts);
 
   const debounce = (func: Function, delay: number) => {
     let timerId: NodeJS.Timeout;
@@ -125,11 +163,11 @@ export default function SearchBar() {
         <div className="absolute mt-2 p-4 bg-slate-800 text-white w-[28rem] rounded-xl flex flex-col gap-2 z-10">
           {activeSearch.map((post) => (
             <div
-              key={post.id}
+              key={post._id}
               onClick={() => handleResultClick(post._id)}
               className="cursor-pointer"
             >
-              {post.title}
+              {post.title} - {post.userName}
             </div>
           ))}
         </div>
