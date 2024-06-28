@@ -9,6 +9,7 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import Filter from "bad-words";
 import { badWords, blackList } from "vn-badwords";
+import DeletePost from "./DeletePost";
 
 const getData = async (slug: string) => {
   const res = await sendRequest({
@@ -121,7 +122,7 @@ const BlogDetails = async ({ params }) => {
               <Link href={`/EditPost/${slug}`}>
                 <Button color="gray">Chỉnh sửa</Button>
               </Link>
-              <Button color="failure">Xóa</Button>
+              <DeletePost postId={post._id} />
             </div>
           ) : (
             <></>

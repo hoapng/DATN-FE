@@ -51,8 +51,6 @@ const ViewDetail = (props) => {
     }
   };
 
-  console.log(dataBook);
-
   return (
     <div style={{ background: "#efefef", padding: "20px 0" }}>
       <div

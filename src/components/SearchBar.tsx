@@ -108,8 +108,6 @@ export default function SearchBar() {
     setIsLoading(false);
   };
 
-  console.log(listPosts);
-
   const debounce = (func: Function, delay: number) => {
     let timerId: NodeJS.Timeout;
     return function (...args: any[]) {
