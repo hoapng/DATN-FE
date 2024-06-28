@@ -303,12 +303,12 @@ const Home = () => {
                           router.push(`/Market/Product/${item._id}`)
                         }
                       >
-                        <div className="wrapper">
-                          <div className="thumbnail">
+                        <div className="wrapper h-full w-full relative">
+                          <div className="thumbnail h-full w-full overflow-hidden">
                             <img
                               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/uploadedFiles/${item.files}`}
-                              // src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThbl47VAQK_3kDo3-L6d84Y2qX-f0TTUlgIQ&s"
                               alt="thumbnail book"
+                              className="object-cover h-full w-full"
                             />
                           </div>
                           <div className="text" title={item.name}>
@@ -333,8 +333,13 @@ const Home = () => {
                     );
                   })}
                 </Row>
-                <div style={{ marginTop: 30 }}></div>
-                <Row style={{ display: "flex", justifyContent: "center" }}>
+                <Row
+                  style={{
+                    marginTop: 80,
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
                   <Pagination
                     current={current}
                     total={total}

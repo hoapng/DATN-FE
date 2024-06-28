@@ -1,12 +1,18 @@
 "use client";
-import { Row, Col, Rate, Divider, Button } from "antd";
+import { Row, Col, Rate, Divider, Button, message } from "antd";
 import "./book.scss";
 import ImageGallery from "react-image-gallery";
 import { useRef, useState } from "react";
 import BookLoader from "./BookLoader";
+import { useSession } from "next-auth/react";
+import { sendRequest } from "@/utils/api";
+import { useRouter } from "next/navigation";
 
 const ViewDetail = (props) => {
   const { dataBook } = props;
+  const { data: session } = useSession();
+  const router = useRouter();
+
   const [isOpenModalGallery, setIsOpenModalGallery] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -25,6 +31,27 @@ const ViewDetail = (props) => {
   const onChange = (value) => {
     console.log("changed", value);
   };
+
+  const handleDeleteProduct = async (_id) => {
+    const res = await sendRequest({
+      url: `http://localhost:8000/api/v1/products/${_id}`,
+      method: "DELETE",
+      nextOption: {
+        cache: "no-store",
+      },
+      headers: {
+        Authorization: `Bearer ${session?.access_token}`,
+      },
+    });
+    if (res && res.data) {
+      message.success("Thành công");
+      router.push("/Market");
+    } else {
+      message.error({ message: "Lỗi", description: res.message });
+    }
+  };
+
+  console.log(dataBook);
 
   return (
     <div style={{ background: "#efefef", padding: "20px 0" }}>
@@ -65,8 +92,19 @@ const ViewDetail = (props) => {
                     />
                   </Col>
                   <Col span={24}>
-                    <div className="createdBy">
-                      Người bán: <a href="#">{dataBook?.createdBy?.name}</a>{" "}
+                    <div className="flex items-center gap-6">
+                      <div className="createdBy">
+                        Người bán: <a href="#">{dataBook?.createdBy?.name}</a>{" "}
+                      </div>
+                      {dataBook.createdBy._id === session?.user._id ? (
+                        <Button
+                          onClick={() => handleDeleteProduct(dataBook._id)}
+                        >
+                          Xóa sản phẩm
+                        </Button>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                     <h1 className="name text-3xl md:text-5xl text-slate-800">
                       {dataBook?.name}
