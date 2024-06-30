@@ -37,7 +37,7 @@ export default function CommentSection({ postId }: { postId: any }) {
     } else message.info(res.message);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (comment.length > 200) {
       return;
@@ -120,8 +120,8 @@ export default function CommentSection({ postId }: { postId: any }) {
         >
           <Textarea
             placeholder="Add a comment..."
-            rows="3"
-            maxLength="200"
+            rows={4}
+            maxLength={200}
             onChange={(e) => setComment(e.target.value)}
             value={comment}
           />

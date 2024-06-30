@@ -63,7 +63,7 @@ const ProductsTable = () => {
       message.success("Thành công");
       fetchProducts();
     } else {
-      message.error({ message: "Lỗi", description: res.message });
+      message.error("Lỗi");
     }
   };
 

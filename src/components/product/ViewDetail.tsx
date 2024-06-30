@@ -47,7 +47,7 @@ const ViewDetail = (props: any) => {
       message.success("Thành công");
       router.push("/Market");
     } else {
-      message.error({ message: "Lỗi", description: res.message });
+      message.error("Lỗi");
     }
   };
 

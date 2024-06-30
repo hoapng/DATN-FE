@@ -48,7 +48,7 @@ const CommentsTable = () => {
     setIsLoading(false);
   };
 
-  const handleDeleteComments = async (_id) => {
+  const handleDeleteComments = async (_id: any) => {
     const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/${_id}`,
       method: "DELETE",
@@ -63,7 +63,7 @@ const CommentsTable = () => {
       message.success("Thành công");
       fetchComments();
     } else {
-      message.error({ message: "Lỗi", description: res.message });
+      message.error("Lỗi");
     }
   };
 

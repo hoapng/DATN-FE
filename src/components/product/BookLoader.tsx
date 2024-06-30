@@ -19,7 +19,7 @@ const BookLoader = () => {
             justifyContent: "center",
           }}
         >
-          <Skeleton.Image active={true} size={10} />
+          <Skeleton.Image active={true} />
           <Skeleton.Image active={true} />
           <Skeleton.Image active={true} />
         </div>

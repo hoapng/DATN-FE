@@ -64,7 +64,7 @@ const BadwordsTable = () => {
       message.success("Thành công");
       fetchBadwords();
     } else {
-      message.error({ message: "Lỗi", description: res.message });
+      message.error("Lỗi");
     }
   };
 

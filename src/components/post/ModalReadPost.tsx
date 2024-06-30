@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Carousel, Modal } from "antd";
 
-const ModalReadPost: React.FC = (props: any) => {
+const ModalReadPost = (props: any) => {
   const { isModalOpen, setIsModalOpen } = props;
 
   const showModal = () => {

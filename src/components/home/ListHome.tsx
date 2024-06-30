@@ -5,7 +5,7 @@ import { Avatar, List, Pagination, PaginationProps, Space } from "antd";
 import { sendRequest } from "@/utils/api";
 import PostCard from "../post/PostCard";
 
-const ListHome: React.FC = (props: any) => {
+const ListHome = (props: any) => {
   const [data, setData] = useState<any>([]);
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);

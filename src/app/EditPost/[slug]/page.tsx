@@ -108,15 +108,8 @@ const EditPost = ({ params }: any) => {
   const [file, setFile] = React.useState([]);
   const { data: session } = useSession();
 
-  const handleUploadFiles = async ({
-    file,
-    onSuccess,
-    onError,
-  }: {
-    file: any;
-    onSuccess: any;
-    onError: any;
-  }) => {
+  const handleUploadFiles = async (options: any) => {
+    const { file, onSuccess, onError } = options;
     const formData = new FormData();
     formData.append("filesUpload", file);
     try {

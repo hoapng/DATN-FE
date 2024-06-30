@@ -69,7 +69,7 @@ const Home = () => {
     //   query += `&${sortQuery}`;
     // }
 
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products`,
       method: "GET",
       queryParams: {
@@ -85,7 +85,7 @@ const Home = () => {
       // headers: {
       //   Authorization: `Bearer ${session?.access_token}`,
       // },
-    });
+    })) as any;
     if (res && res.data) {
       setListBook(res.data.result);
       setTotal(res.data.meta.total);
@@ -93,7 +93,7 @@ const Home = () => {
     setIsLoading(false);
   };
 
-  const handleOnchangePage = (pagination) => {
+  const handleOnchangePage = (pagination: any) => {
     if (pagination && pagination.current !== current) {
       setCurrent(pagination.current);
     }
@@ -103,7 +103,7 @@ const Home = () => {
     }
   };
 
-  const handleChangeFilter = (changedValues, values) => {
+  const handleChangeFilter = (changedValues: any, values: any) => {
     // console.log(">>> check changedValues, values: ", changedValues, values)
 
     //only fire if category changes
@@ -130,7 +130,7 @@ const Home = () => {
     }
   };
 
-  const onFinish = (values) => {
+  const onFinish = (values: any) => {
     // console.log('>> check values: ', values)
 
     if (values?.range?.from >= 0 && values?.range?.to >= 0) {
@@ -294,7 +294,7 @@ const Home = () => {
                   />
                 </Row>
                 <Row className="customize-row">
-                  {listBook?.map((item, index) => {
+                  {listBook?.map((item: any, index: any) => {
                     return (
                       <div
                         className="column"

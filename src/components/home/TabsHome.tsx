@@ -9,7 +9,7 @@ const onChange = (key: string) => {
   console.log(key);
 };
 
-const TabsHome: React.FC = (props: any) => {
+const TabsHome = (props: any) => {
   const items: TabsProps["items"] = [
     {
       key: "1",
