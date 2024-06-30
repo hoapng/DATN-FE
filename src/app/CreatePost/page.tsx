@@ -305,6 +305,7 @@ export default function CreatePost() {
                 }
               })
             }
+            // @ts-ignore
             customRequest={handleUploadFiles}
             onChange={(info) => handleChange(info)}
             onPreview={handlePreview}
