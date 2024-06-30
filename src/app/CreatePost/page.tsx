@@ -12,14 +12,14 @@ import { signIn, useSession } from "next-auth/react";
 import * as nsfwjs from "nsfwjs";
 import { useRouter } from "next/navigation";
 
-export enum TweetType {
-  Post = "Post",
-  Share = "Share",
-  News = "News",
-  Review = "Review",
-  Tips = "Tips",
-  Question = "Question",
-}
+// export enum TweetType {
+//   Post = "Post",
+//   Share = "Share",
+//   News = "News",
+//   Review = "Review",
+//   Tips = "Tips",
+//   Question = "Question",
+// }
 
 const normFile = (e: any) => {
   if (Array.isArray(e)) {
@@ -248,10 +248,10 @@ export default function CreatePost() {
       <Form onFinish={onFinish} layout="vertical">
         <Form.Item label="Select" name="type">
           <Select>
-            <Select.Option value={TweetType.News}>News</Select.Option>
-            <Select.Option value={TweetType.Question}>Question</Select.Option>
-            <Select.Option value={TweetType.Review}>Review</Select.Option>
-            <Select.Option value={TweetType.Tips}>Tips</Select.Option>
+            <Select.Option value={"News"}>News</Select.Option>
+            <Select.Option value={"Question"}>Question</Select.Option>
+            <Select.Option value={"Review"}>Review</Select.Option>
+            <Select.Option value={"Tips"}>Tips</Select.Option>
           </Select>
         </Form.Item>
 

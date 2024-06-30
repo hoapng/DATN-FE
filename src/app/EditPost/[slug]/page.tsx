@@ -13,15 +13,6 @@ import * as nsfwjs from "nsfwjs";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 
-export enum TweetType {
-  Post = "Post",
-  Share = "Share",
-  News = "News",
-  Review = "Review",
-  Tips = "Tips",
-  Question = "Question",
-}
-
 const normFile = (e: any) => {
   if (Array.isArray(e)) {
     return e;
@@ -299,9 +290,10 @@ const EditPost = ({ params }) => {
       <Form onFinish={onFinish} layout="vertical" form={form}>
         <Form.Item label="Select" name="type">
           <Select disabled>
-            <Select.Option value={TweetType.News}>News</Select.Option>
-            <Select.Option value={TweetType.Question}>Question</Select.Option>
-            <Select.Option value={TweetType.Review}>Review</Select.Option>
+            <Select.Option value={"News"}>News</Select.Option>
+            <Select.Option value={"Question"}>Question</Select.Option>
+            <Select.Option value={"Review"}>Review</Select.Option>
+            <Select.Option value={"Tips"}>Tips</Select.Option>
           </Select>
         </Form.Item>
 
