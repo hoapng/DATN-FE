@@ -215,12 +215,12 @@ const EditPost = ({ params }: any) => {
       method: "PATCH",
       body: {
         ...values,
-        hashtags: values.hashtags
-          ? values.hashtags
-              .trim()
-              .split("#")
-              .map((hashtag: any) => hashtag.trim())
-          : [],
+        // hashtags: values.hashtags
+        //   ? values.hashtags
+        //       .trim()
+        //       .split("#")
+        //       .map((hashtag: any) => hashtag.trim())
+        //   : [],
         files: file.length === 0 ? [] : file.map((item: any) => item.name),
       },
       headers: {
@@ -263,7 +263,7 @@ const EditPost = ({ params }: any) => {
       setData(res.data);
       form.setFieldsValue({
         ...res.data,
-        hashtags: res.data.hashtags ? res.data.hashtags.join(" #") : [],
+        // hashtags: res.data.hashtags ? res.data.hashtags.join(" #") : [],
       });
       const files = res.data.files.map((item: any) => {
         return {

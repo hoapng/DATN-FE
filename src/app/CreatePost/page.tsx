@@ -38,61 +38,61 @@ const getBase64 = (img: FileType, callback: (url: string) => void) => {
 
 export default function CreatePost() {
   const [content, setContent] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState([]);
-  const ref = useRef<string>();
+  // const [loading, setLoading] = useState(false);
+  // const [users, setUsers] = useState([]);
+  // const ref = useRef<string>();
 
-  const loadGithubUsers = async (key: string) => {
-    if (!key) {
-      setUsers([]);
-      return;
-    }
+  // const loadGithubUsers = async (key: string) => {
+  //   if (!key) {
+  //     setUsers([]);
+  //     return;
+  //   }
 
-    let date = new Date();
+  // let date = new Date();
 
-    // const res = await sendRequest({
-    //   url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/hashtag/top`,
-    //   method: "GET",
-    //   queryParams: {
-    //     current: 1,
-    //     pageSize: 5,
-    //     from: date.setDate(date.getDate() - 7),
-    //     name: `/${key}/`,
-    //   },
-    //   nextOption: {
-    //     cache: "no-store",
-    //   },
-    // });
-    // if (res && res.data) {
-    //   if (ref.current !== key) return;
-    //   setLoading(false);
-    //   setUsers(res.data.result);
-    // }
+  // const res = await sendRequest({
+  //   url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/hashtag/top`,
+  //   method: "GET",
+  //   queryParams: {
+  //     current: 1,
+  //     pageSize: 5,
+  //     from: date.setDate(date.getDate() - 7),
+  //     name: `/${key}/`,
+  //   },
+  //   nextOption: {
+  //     cache: "no-store",
+  //   },
+  // });
+  // if (res && res.data) {
+  //   if (ref.current !== key) return;
+  //   setLoading(false);
+  //   setUsers(res.data.result);
+  // }
 
-    // fetch(`https://api.github.com/search/users?q=${key}`)
-    //   .then((res) => res.json())
-    //   .then(({ items = [] }) => {
-    //     if (ref.current !== key) return;
+  // fetch(`https://api.github.com/search/users?q=${key}`)
+  //   .then((res) => res.json())
+  //   .then(({ items = [] }) => {
+  //     if (ref.current !== key) return;
 
-    //     setLoading(false);
-    //     setUsers(items.slice(0, 10));
-    //     console.log(users);
-    //   });
-  };
+  //     setLoading(false);
+  //     setUsers(items.slice(0, 10));
+  //     console.log(users);
+  //   });
+  // };
 
-  const debounceLoadGithubUsers = useCallback(
-    debounce(loadGithubUsers, 500),
-    []
-  );
+  // const debounceLoadGithubUsers = useCallback(
+  //   debounce(loadGithubUsers, 500),
+  //   []
+  // );
 
-  const onSearch = (search: string) => {
-    console.log("Search:", search);
-    ref.current = search;
-    setLoading(!!search);
-    setUsers([]);
+  // const onSearch = (search: string) => {
+  //   console.log("Search:", search);
+  //   ref.current = search;
+  //   setLoading(!!search);
+  //   setUsers([]);
 
-    debounceLoadGithubUsers(search);
-  };
+  //   debounceLoadGithubUsers(search);
+  // };
 
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState("");

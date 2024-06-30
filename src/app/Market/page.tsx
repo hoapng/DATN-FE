@@ -29,7 +29,7 @@ const Home = () => {
     { label: "Ổn", value: "Fine" },
   ];
 
-  const [listBook, setListBook] = useState([]);
+  const [listProduct, setListProduct] = useState([]);
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(0);
@@ -55,11 +55,11 @@ const Home = () => {
   // }, []);
 
   useEffect(() => {
-    fetchBook();
+    fetchProduct();
     console.log(createdBy);
   }, [current, pageSize, filter, sortQuery, createdBy]);
 
-  const fetchBook = async () => {
+  const fetchProduct = async () => {
     setIsLoading(true);
     // let query = `current=${current}&pageSize=${pageSize}`;
     // if (filter) {
@@ -87,7 +87,7 @@ const Home = () => {
       // },
     })) as any;
     if (res && res.data) {
-      setListBook(res.data.result);
+      setListProduct(res.data.result);
       setTotal(res.data.meta.total);
     }
     setIsLoading(false);
@@ -294,11 +294,11 @@ const Home = () => {
                   />
                 </Row>
                 <Row className="customize-row">
-                  {listBook?.map((item: any, index: any) => {
+                  {listProduct?.map((item: any, index: any) => {
                     return (
                       <div
                         className="column"
-                        key={`book-${index}`}
+                        key={`product-${index}`}
                         onClick={() =>
                           router.push(`/Market/Product/${item._id}`)
                         }
@@ -307,7 +307,7 @@ const Home = () => {
                           <div className="thumbnail h-full w-full overflow-hidden">
                             <img
                               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/uploadedFiles/${item.files}`}
-                              alt="thumbnail book"
+                              alt="thumbnail product"
                               className="object-cover h-full w-full"
                             />
                           </div>
