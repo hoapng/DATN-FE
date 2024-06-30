@@ -6,7 +6,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export const authOptions: AuthOptions = {
+const authOptions: AuthOptions = {
   secret: process.env.NO_SECRET,
   providers: [
     GitHubProvider({
