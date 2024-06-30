@@ -50,24 +50,24 @@ export default function CreatePost() {
 
     let date = new Date();
 
-    const res = await sendRequest({
-      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/hashtag/top`,
-      method: "GET",
-      queryParams: {
-        current: 1,
-        pageSize: 5,
-        from: date.setDate(date.getDate() - 7),
-        name: `/${key}/`,
-      },
-      nextOption: {
-        cache: "no-store",
-      },
-    });
-    if (res && res.data) {
-      if (ref.current !== key) return;
-      setLoading(false);
-      setUsers(res.data.result);
-    }
+    // const res = await sendRequest({
+    //   url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/hashtag/top`,
+    //   method: "GET",
+    //   queryParams: {
+    //     current: 1,
+    //     pageSize: 5,
+    //     from: date.setDate(date.getDate() - 7),
+    //     name: `/${key}/`,
+    //   },
+    //   nextOption: {
+    //     cache: "no-store",
+    //   },
+    // });
+    // if (res && res.data) {
+    //   if (ref.current !== key) return;
+    //   setLoading(false);
+    //   setUsers(res.data.result);
+    // }
 
     // fetch(`https://api.github.com/search/users?q=${key}`)
     //   .then((res) => res.json())
