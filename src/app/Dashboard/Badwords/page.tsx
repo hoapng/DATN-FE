@@ -49,7 +49,7 @@ const BadwordsTable = () => {
     setIsLoading(false);
   };
 
-  const handleDeleteBadwords = async (_id) => {
+  const handleDeleteBadwords = async (_id: any) => {
     const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/badwords/${_id}`,
       method: "DELETE",
