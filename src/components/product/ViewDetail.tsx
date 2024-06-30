@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 import { sendRequest } from "@/utils/api";
 import { useRouter } from "next/navigation";
 
-const ViewDetail = (props) => {
+const ViewDetail = (props: any) => {
   const { dataBook } = props;
   const { data: session } = useSession();
   const router = useRouter();
@@ -16,7 +16,7 @@ const ViewDetail = (props) => {
   const [isOpenModalGallery, setIsOpenModalGallery] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const refGallery = useRef(null);
+  const refGallery = useRef<any>(null);
 
   const images = dataBook?.items ?? [];
 
@@ -28,12 +28,12 @@ const ViewDetail = (props) => {
     // refGallery?.current?.fullScreen()
   };
 
-  const onChange = (value) => {
+  const onChange = (value: any) => {
     console.log("changed", value);
   };
 
-  const handleDeleteProduct = async (_id) => {
-    const res = await sendRequest({
+  const handleDeleteProduct = async (_id: any) => {
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products/${_id}`,
       method: "DELETE",
       nextOption: {
@@ -42,7 +42,7 @@ const ViewDetail = (props) => {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
-    });
+    })) as any;
     if (res && res.data) {
       message.success("Thành công");
       router.push("/Market");

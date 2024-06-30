@@ -1,7 +1,7 @@
 import { ArrowRightOutlined } from "@ant-design/icons";
 import Link from "next/link";
 
-export default function PostCard({ post }) {
+export default function PostCard({ post }: any) {
   return (
     <div
       key={post?._id}

@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Col, Form, Input, Row, theme } from "antd";
 
-const InputBadwordsCreate = (props) => {
+const InputBadwordsCreate = (props: any) => {
   const { token } = theme.useToken();
   const [form] = Form.useForm();
 

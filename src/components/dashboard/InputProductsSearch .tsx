@@ -12,7 +12,7 @@ const InputProductsSearch = (props: any) => {
     padding: 24,
   };
 
-  const onFinish = (values) => {
+  const onFinish = (values: any) => {
     let query = {};
     if (values.name) {
       query = {

@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth";
 import React from "react";
 
 const getProfile = async (slug: string) => {
-  const res = await sendRequest({
+  const res = (await sendRequest({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/${slug}`,
     method: "GET",
     nextOption: {
@@ -15,7 +15,7 @@ const getProfile = async (slug: string) => {
     // headers: {
     //   Authorization: `Bearer ${session?.access_token}`,
     // },
-  });
+  })) as any;
 
   if (res.data) {
     return res.data;
@@ -23,7 +23,7 @@ const getProfile = async (slug: string) => {
 };
 
 const getFollowers = async (slug: string) => {
-  const res = await sendRequest({
+  const res = (await sendRequest({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/followers`,
     method: "GET",
     queryParams: {
@@ -37,7 +37,7 @@ const getFollowers = async (slug: string) => {
     // headers: {
     //   Authorization: `Bearer ${session?.access_token}`,
     // },
-  });
+  })) as any;
 
   if (res.data) {
     return res.data;
@@ -45,7 +45,7 @@ const getFollowers = async (slug: string) => {
 };
 
 const getFollowing = async (slug: string) => {
-  const res = await sendRequest({
+  const res = (await sendRequest({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/followers`,
     method: "GET",
     queryParams: {
@@ -59,7 +59,7 @@ const getFollowing = async (slug: string) => {
     // headers: {
     //   Authorization: `Bearer ${session?.access_token}`,
     // },
-  });
+  })) as any;
 
   if (res.data) {
     return res.data;
@@ -67,7 +67,7 @@ const getFollowing = async (slug: string) => {
 };
 
 const getPosts = async (slug: string) => {
-  const res = await sendRequest({
+  const res = (await sendRequest({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets`,
     method: "GET",
     queryParams: {
@@ -81,14 +81,14 @@ const getPosts = async (slug: string) => {
     // headers: {
     //   Authorization: `Bearer ${session?.access_token}`,
     // },
-  });
+  })) as any;
 
   if (res.data) {
     return res.data;
   }
 };
 
-const Profile = async ({ params }) => {
+const Profile = async ({ params }: any) => {
   const { slug } = params;
   const session = await getServerSession(authOptions);
   const user = await getProfile(slug);

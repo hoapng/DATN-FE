@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Col, Form, Input, Row, theme } from "antd";
 
-const InputUsersSearch = (props) => {
+const InputUsersSearch = (props: any) => {
   const { token } = theme.useToken();
   const [form] = Form.useForm();
 
@@ -12,7 +12,7 @@ const InputUsersSearch = (props) => {
     padding: 24,
   };
 
-  const onFinish = (values) => {
+  const onFinish = (values: any) => {
     let query = {};
     if (values.name) {
       query = {

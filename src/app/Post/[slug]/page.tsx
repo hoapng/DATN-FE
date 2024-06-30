@@ -11,28 +11,21 @@ import DeletePost from "./DeletePost";
 import authOptions from "@/app/api/authOptions";
 
 const getBadWords = async () => {
-  const res = await sendRequest({
+  const res = (await sendRequest({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/badwords`,
     method: "GET",
     nextOption: {
       cache: "no-store",
     },
-  });
+  })) as any;
 
   if (res.data && res.data.result) {
     return res.data.result.map((x: any) => x.word);
   }
 };
 
-const badWordList = await getBadWords();
-
-const customFilter = new Filter({
-  list: badWordList,
-  splitRegex: /(?:(?<= )|(?= )|(?<=<)|(?=<)|(?<=>)|(?=>)|(?<=&)|(?=&))/g,
-});
-
 const getData = async (slug: string) => {
-  const res = await sendRequest({
+  const res = (await sendRequest({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/${slug}`,
     method: "GET",
     queryParams: {
@@ -44,15 +37,14 @@ const getData = async (slug: string) => {
     // headers: {
     //   Authorization: `Bearer ${session?.access_token}`,
     // },
-  });
-
+  })) as any;
   if (res.data) {
     return res.data;
   }
 };
 
 const getSamePosts = async (slug: string) => {
-  const res = await sendRequest({
+  const res = (await sendRequest({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/recommend/${slug}`,
     method: "GET",
     queryParams: {
@@ -65,14 +57,14 @@ const getSamePosts = async (slug: string) => {
     // headers: {
     //   Authorization: `Bearer ${session?.access_token}`,
     // },
-  });
+  })) as any;
 
   if (res.data) {
     return res.data;
   }
 };
 
-const BlogDetails = async ({ params }) => {
+const BlogDetails = async ({ params }: any) => {
   const { slug } = params;
 
   const session = await getServerSession(authOptions);
@@ -80,6 +72,13 @@ const BlogDetails = async ({ params }) => {
   const post = await getData(slug);
 
   const samePosts = await getSamePosts(slug);
+
+  const badWordList = await getBadWords();
+
+  const customFilter = new Filter({
+    list: badWordList,
+    splitRegex: /(?:(?<= )|(?= )|(?<=<)|(?=<)|(?<=>)|(?=>)|(?<=&)|(?=&))/g,
+  });
 
   return (
     <div className="w-full px-0 md:px-10 py-8 2xl:px-20">

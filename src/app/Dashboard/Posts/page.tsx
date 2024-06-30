@@ -24,7 +24,7 @@ const PostsTable = () => {
 
   const fetchPosts = async () => {
     setIsLoading(true);
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets`,
       method: "GET",
       queryParams: {
@@ -39,7 +39,7 @@ const PostsTable = () => {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
-    });
+    })) as any;
     if (res && res.data) {
       setListPosts(res.data.result);
       setTotal(res.data.meta.total);
@@ -48,8 +48,8 @@ const PostsTable = () => {
     setIsLoading(false);
   };
 
-  const handleDeletePosts = async (_id) => {
-    const res = await sendRequest({
+  const handleDeletePosts = async (_id: any) => {
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/${_id}`,
       method: "DELETE",
       nextOption: {
@@ -58,7 +58,7 @@ const PostsTable = () => {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
-    });
+    })) as any;
     if (res && res.data) {
       message.success("Thành công");
       fetchPosts();
@@ -71,7 +71,7 @@ const PostsTable = () => {
     {
       title: "_id",
       dataIndex: "_id",
-      render: (text, record, index) => {
+      render: (text: any, record: any, index: any) => {
         return <a href={`/Post/${record._id}`}>{record._id}</a>;
       },
     },
@@ -88,7 +88,7 @@ const PostsTable = () => {
     {
       title: "image",
       dataIndex: "image",
-      render: (text, record, index) => {
+      render: (text: any, record: any, index: any) => {
         return (
           <img
             src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/uploadedFiles/${record.files[0]}`}
@@ -110,7 +110,7 @@ const PostsTable = () => {
     },
     {
       title: "action",
-      render: (text, record, index) => {
+      render: (text: any, record: any, index: any) => {
         return (
           <>
             <Popconfirm
@@ -129,7 +129,7 @@ const PostsTable = () => {
     },
   ];
 
-  const onChange = (pagination, filters, sorter, extra) => {
+  const onChange = (pagination: any, filters: any, sorter: any, extra: any) => {
     if (pagination && pagination.current !== current) {
       setCurrent(pagination.current);
     }
@@ -145,7 +145,7 @@ const PostsTable = () => {
     }
   };
 
-  const handleSearch = (query) => {
+  const handleSearch = (query: any) => {
     setFilter(query);
   };
 

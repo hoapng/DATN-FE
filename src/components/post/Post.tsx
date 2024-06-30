@@ -46,7 +46,7 @@ const Post: React.FC = (props: any) => {
 
   return (
     <>
-      {props.tweets.map((tweet) => {
+      {props.tweets.map((tweet: any) => {
         return (
           <Card
             key={tweet._id}

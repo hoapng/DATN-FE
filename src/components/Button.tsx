@@ -1,4 +1,4 @@
-const Button = ({ label, styles, icon, type, onClick }) => {
+const Button = ({ label, styles, icon, type, onClick }: any) => {
   return (
     <button
       onClick={onClick}

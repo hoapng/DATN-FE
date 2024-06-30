@@ -6,7 +6,7 @@ import { Button, Textarea } from "flowbite-react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-export default function Comment({ comment, onDelete, getComments }) {
+export default function Comment({ comment, onDelete, getComments }: any) {
   const { data: session } = useSession();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -18,7 +18,7 @@ export default function Comment({ comment, onDelete, getComments }) {
   };
 
   const handleSave = async () => {
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comments/${comment._id}`,
       method: "PATCH",
       body: {
@@ -30,7 +30,7 @@ export default function Comment({ comment, onDelete, getComments }) {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
-    });
+    })) as any;
     if (res.data) {
       setIsEditing(false);
       getComments();

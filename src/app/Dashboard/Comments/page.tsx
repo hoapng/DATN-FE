@@ -24,7 +24,7 @@ const CommentsTable = () => {
 
   const fetchComments = async () => {
     setIsLoading(true);
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comments`,
       method: "GET",
       queryParams: {
@@ -39,7 +39,7 @@ const CommentsTable = () => {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
-    });
+    })) as any;
     if (res && res.data) {
       setListComments(res.data.result);
       setTotal(res.data.meta.total);
@@ -49,7 +49,7 @@ const CommentsTable = () => {
   };
 
   const handleDeleteComments = async (_id) => {
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/${_id}`,
       method: "DELETE",
       nextOption: {
@@ -58,7 +58,7 @@ const CommentsTable = () => {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
-    });
+    })) as any;
     if (res && res.data) {
       message.success("Thành công");
       fetchComments();
@@ -75,7 +75,7 @@ const CommentsTable = () => {
     {
       title: "post",
       dataIndex: "post",
-      render: (text, record, index) => {
+      render: (text: any, record: any, index: any) => {
         return <a href={`/Post/${record.post}`}>{record.post}</a>;
       },
     },
@@ -96,7 +96,7 @@ const CommentsTable = () => {
     },
     {
       title: "action",
-      render: (text, record, index) => {
+      render: (text: any, record: any, index: any) => {
         return (
           <>
             <Popconfirm
@@ -115,7 +115,7 @@ const CommentsTable = () => {
     },
   ];
 
-  const onChange = (pagination, filters, sorter, extra) => {
+  const onChange = (pagination: any, filters: any, sorter: any, extra: any) => {
     if (pagination && pagination.current !== current) {
       setCurrent(pagination.current);
     }
@@ -131,7 +131,7 @@ const CommentsTable = () => {
     }
   };
 
-  const handleSearch = (query) => {
+  const handleSearch = (query: any) => {
     setFilter(query);
   };
 

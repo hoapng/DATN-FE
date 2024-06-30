@@ -13,7 +13,7 @@ export default function DeletePost({ postId }: { postId: any }) {
   const handleDeletePost = async (_id: any) => {
     console.log(_id);
     try {
-      const res = await sendRequest({
+      const res = (await sendRequest({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/${_id}`,
         method: "DELETE",
         nextOption: {
@@ -22,7 +22,7 @@ export default function DeletePost({ postId }: { postId: any }) {
         headers: {
           Authorization: `Bearer ${session?.access_token}`,
         },
-      });
+      })) as any;
 
       if (res && res.data) {
         message.success("Thành công");

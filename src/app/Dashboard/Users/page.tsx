@@ -25,7 +25,7 @@ const UsersTable = () => {
 
   const fetchUsers = async () => {
     setIsLoading(true);
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users`,
       method: "GET",
       queryParams: {
@@ -40,7 +40,7 @@ const UsersTable = () => {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
-    });
+    })) as any;
     if (res && res.data) {
       setListUsers(res.data.result);
       setTotal(res.data.meta.total);
@@ -49,8 +49,8 @@ const UsersTable = () => {
     setIsLoading(false);
   };
 
-  const handleDeleteUsers = async (_id) => {
-    const res = await sendRequest({
+  const handleDeleteUsers = async (_id: any) => {
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/${_id}`,
       method: "DELETE",
       nextOption: {
@@ -59,7 +59,7 @@ const UsersTable = () => {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
-    });
+    })) as any;
     if (res && res.data) {
       message.success("Thành công");
       fetchUsers();
@@ -72,7 +72,7 @@ const UsersTable = () => {
     {
       title: "_id",
       dataIndex: "_id",
-      render: (text, record, index) => {
+      render: (text: any, record: any, index: any) => {
         return <a href={`/Post/${record._id}`}>{record._id}</a>;
       },
     },
@@ -93,7 +93,7 @@ const UsersTable = () => {
     {
       title: "avatar",
       dataIndex: "avatar",
-      render: (text, record, index) => {
+      render: (text: any, record: any, index: any) => {
         return (
           <img
             src={`${record.avatar}`}
@@ -110,7 +110,7 @@ const UsersTable = () => {
     },
     {
       title: "action",
-      render: (text, record, index) => {
+      render: (text: any, record: any, index: any) => {
         return (
           <>
             <Popconfirm
@@ -129,7 +129,7 @@ const UsersTable = () => {
     },
   ];
 
-  const onChange = (pagination, filters, sorter, extra) => {
+  const onChange = (pagination: any, filters: any, sorter: any, extra: any) => {
     if (pagination && pagination.current !== current) {
       setCurrent(pagination.current);
     }
@@ -145,7 +145,7 @@ const UsersTable = () => {
     }
   };
 
-  const handleSearch = (query) => {
+  const handleSearch = (query: any) => {
     setFilter(query);
   };
 

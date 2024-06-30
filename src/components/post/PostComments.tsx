@@ -12,12 +12,12 @@ export default function CommentSection({ postId }: { postId: any }) {
   const { data: session } = useSession();
 
   const [comment, setComment] = useState("");
-  const [comments, setComments] = useState({});
+  const [comments, setComments] = useState<any>({});
   const [showModal, setShowModal] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState("");
 
   const getComments = async () => {
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comments/`,
       method: "GET",
       queryParams: {
@@ -31,7 +31,7 @@ export default function CommentSection({ postId }: { postId: any }) {
       // headers: {
       //   Authorization: `Bearer ${session?.access_token}`,
       // },
-    });
+    })) as any;
     if (res.data) {
       setComments(res.data);
     } else message.info(res.message);
@@ -42,7 +42,7 @@ export default function CommentSection({ postId }: { postId: any }) {
     if (comment.length > 200) {
       return;
     }
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comments/`,
       method: "POST",
       body: {
@@ -55,7 +55,7 @@ export default function CommentSection({ postId }: { postId: any }) {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
-    });
+    })) as any;
 
     if (res.data) {
       setComment("");
@@ -70,7 +70,7 @@ export default function CommentSection({ postId }: { postId: any }) {
     //   navigate('/sign-in');
     //   return;
     // }
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comments/${commentId}`,
       method: "DELETE",
       nextOption: {
@@ -79,7 +79,7 @@ export default function CommentSection({ postId }: { postId: any }) {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
-    });
+    })) as any;
     if (res.data) {
       getComments();
     } else message.info(res.message);
@@ -150,7 +150,7 @@ export default function CommentSection({ postId }: { postId: any }) {
               <p>{comments?.meta?.total}</p>
             </div>
           </div>
-          {comments?.result?.map((comment) => (
+          {comments?.result?.map((comment: any) => (
             <Comment
               key={comment._id}
               comment={comment}

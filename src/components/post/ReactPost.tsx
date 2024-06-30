@@ -19,12 +19,12 @@ const ReactPost = (props: any) => {
   const { data: session } = useSession();
   const router = useRouter();
 
-  const [postLikes, setPostLikes] = useState({});
+  const [postLikes, setPostLikes] = useState<any>({});
 
-  const [checkPostLikes, setCheckPostLikes] = useState([]);
+  const [checkPostLikes, setCheckPostLikes] = useState<any>([]);
 
   const fetchData = async () => {
-    const res2 = await sendRequest({
+    const res2 = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
       method: "GET",
       queryParams: {
@@ -38,7 +38,7 @@ const ReactPost = (props: any) => {
       nextOption: {
         cache: "no-store",
       },
-    });
+    })) as any;
     if (res2?.data) setPostLikes(res2?.data);
   };
   useEffect(() => {
@@ -47,7 +47,7 @@ const ReactPost = (props: any) => {
 
   const checkLike = async () => {
     if (session) {
-      const res1 = await sendRequest({
+      const res1 = (await sendRequest({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
         method: "GET",
         queryParams: {
@@ -60,7 +60,7 @@ const ReactPost = (props: any) => {
         nextOption: {
           cache: "no-store",
         },
-      });
+      })) as any;
       if (res1?.data?.result) setCheckPostLikes(res1?.data?.result);
       else setCheckPostLikes([]);
     }
@@ -71,7 +71,7 @@ const ReactPost = (props: any) => {
   }, [session]);
 
   const handleLikePost = async () => {
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
       method: "POST",
       body: {
@@ -83,7 +83,7 @@ const ReactPost = (props: any) => {
       nextOption: {
         cache: "no-store",
       },
-    });
+    })) as any;
     if (res?.error) message.error(res?.error);
 
     fetchData();

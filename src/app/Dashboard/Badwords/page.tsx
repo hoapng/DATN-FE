@@ -25,7 +25,7 @@ const BadwordsTable = () => {
 
   const fetchBadwords = async () => {
     setIsLoading(true);
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/badwords`,
       method: "GET",
       queryParams: {
@@ -40,7 +40,7 @@ const BadwordsTable = () => {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
-    });
+    })) as any;
     if (res && res.data) {
       setListBadwords(res.data.result);
       setTotal(res.data.meta.total);
@@ -50,7 +50,7 @@ const BadwordsTable = () => {
   };
 
   const handleDeleteBadwords = async (_id) => {
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/badwords/${_id}`,
       method: "DELETE",
       nextOption: {
@@ -59,7 +59,7 @@ const BadwordsTable = () => {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
-    });
+    })) as any;
     if (res && res.data) {
       message.success("Thành công");
       fetchBadwords();
@@ -85,7 +85,7 @@ const BadwordsTable = () => {
     },
     {
       title: "action",
-      render: (text, record, index) => {
+      render: (text: any, record: any, index: any) => {
         return (
           <>
             <Popconfirm
@@ -104,7 +104,7 @@ const BadwordsTable = () => {
     },
   ];
 
-  const onChange = (pagination, filters, sorter, extra) => {
+  const onChange = (pagination: any, filters: any, sorter: any, extra: any) => {
     if (pagination && pagination.current !== current) {
       setCurrent(pagination.current);
     }
@@ -120,12 +120,12 @@ const BadwordsTable = () => {
     }
   };
 
-  const handleSearch = (query) => {
+  const handleSearch = (query: any) => {
     setFilter(query);
   };
 
-  const handleCreate = async (word) => {
-    const res = await sendRequest({
+  const handleCreate = async (word: any) => {
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/badwords`,
       method: "POST",
       body: {
@@ -134,7 +134,7 @@ const BadwordsTable = () => {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
-    });
+    })) as any;
     if (res.data) {
       message.success(res.message);
       fetchBadwords();

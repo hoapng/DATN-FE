@@ -2,7 +2,7 @@ import React from "react";
 import ReactQuill, { ReactQuillProps } from "react-quill";
 
 type Props = ReactQuillProps & {
-  reactQuillRef?: React.Ref;
+  reactQuillRef?: any;
 };
 
 const ReactQuillWrapper = (props: Props) => {

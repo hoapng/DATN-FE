@@ -48,7 +48,7 @@ export default function CreatePost() {
 
     let date = new Date();
 
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/hashtag/top`,
       method: "GET",
       queryParams: {
@@ -60,7 +60,7 @@ export default function CreatePost() {
       nextOption: {
         cache: "no-store",
       },
-    });
+    })) as any;
     if (res && res.data) {
       if (ref.current !== key) return;
       setLoading(false);
@@ -124,7 +124,7 @@ export default function CreatePost() {
     const formData = new FormData();
     formData.append("filesUpload", file);
     try {
-      const res = await sendRequestFile({
+      const res = (await sendRequestFile({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/files/upload`,
         method: "POST",
         body: formData,
@@ -134,7 +134,7 @@ export default function CreatePost() {
         headers: {
           Authorization: `Bearer ${session?.access_token}`,
         },
-      });
+      })) as any;
       setFile(res.data.fileNames);
       onSuccess("ok");
     } catch (error) {
@@ -147,7 +147,7 @@ export default function CreatePost() {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
 
-  const handlePreview = async (file) => {
+  const handlePreview = async (file: any) => {
     getBase64(file.originFileObj, (url) => {
       setPreviewImage(url);
       setPreviewOpen(true);
@@ -169,7 +169,7 @@ export default function CreatePost() {
     return new Promise((resolve, reject) => {
       let reader = new FileReader();
 
-      reader.onload = async (e) => {
+      reader.onload = async (e: any) => {
         let img = new Image();
         img.src = e.target.result;
 
@@ -215,7 +215,7 @@ export default function CreatePost() {
     //     : [],
     //   files: file,
     // });
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products`,
       method: "POST",
       body: {
@@ -231,7 +231,7 @@ export default function CreatePost() {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
-    });
+    })) as any;
     if (res.data) {
       message.success(res.message);
       router.push("/Market");

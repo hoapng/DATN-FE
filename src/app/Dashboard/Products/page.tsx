@@ -24,7 +24,7 @@ const ProductsTable = () => {
 
   const fetchProducts = async () => {
     setIsLoading(true);
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products`,
       method: "GET",
       queryParams: {
@@ -39,7 +39,7 @@ const ProductsTable = () => {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
-    });
+    })) as any;
     if (res && res.data) {
       setListProducts(res.data.result);
       setTotal(res.data.meta.total);
@@ -48,8 +48,8 @@ const ProductsTable = () => {
     setIsLoading(false);
   };
 
-  const handleDeleteProducts = async (_id) => {
-    const res = await sendRequest({
+  const handleDeleteProducts = async (_id: any) => {
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products/${_id}`,
       method: "DELETE",
       nextOption: {
@@ -58,7 +58,7 @@ const ProductsTable = () => {
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
-    });
+    })) as any;
     if (res && res.data) {
       message.success("Thành công");
       fetchProducts();
@@ -71,7 +71,7 @@ const ProductsTable = () => {
     {
       title: "_id",
       dataIndex: "_id",
-      render: (text, record, index) => {
+      render: (text: any, record: any, index: any) => {
         return <a href={`/Market/Product/${record._id}`}>{record._id}</a>;
       },
     },
@@ -88,7 +88,7 @@ const ProductsTable = () => {
     {
       title: "image",
       dataIndex: "image",
-      render: (text, record, index) => {
+      render: (text: any, record: any, index: any) => {
         return (
           <img
             src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/uploadedFiles/${record.files[0]}`}
@@ -105,7 +105,7 @@ const ProductsTable = () => {
     },
     {
       title: "action",
-      render: (text, record, index) => {
+      render: (text: any, record: any, index: any) => {
         return (
           <>
             <Popconfirm
@@ -124,7 +124,7 @@ const ProductsTable = () => {
     },
   ];
 
-  const onChange = (pagination, filters, sorter, extra) => {
+  const onChange = (pagination: any, filters: any, sorter: any, extra: any) => {
     if (pagination && pagination.current !== current) {
       setCurrent(pagination.current);
     }
@@ -140,7 +140,7 @@ const ProductsTable = () => {
     }
   };
 
-  const handleSearch = (query) => {
+  const handleSearch = (query: any) => {
     setFilter(query);
   };
 

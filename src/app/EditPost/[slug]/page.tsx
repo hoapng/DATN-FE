@@ -28,12 +28,12 @@ const getBase64 = (img: FileType, callback: (url: string) => void) => {
   reader.readAsDataURL(img);
 };
 
-const EditPost = ({ params }) => {
+const EditPost = ({ params }: any) => {
   const { slug } = params;
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
-  const [data, setData] = useState({});
+  const [data, setData] = useState<any>({});
   const ref = useRef<string>();
 
   const loadGithubUsers = async (key: string) => {
@@ -44,7 +44,7 @@ const EditPost = ({ params }) => {
 
     let date = new Date();
 
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/hashtag/top`,
       method: "GET",
       queryParams: {
@@ -56,7 +56,7 @@ const EditPost = ({ params }) => {
       nextOption: {
         cache: "no-store",
       },
-    });
+    })) as any;
     if (res && res.data) {
       if (ref.current !== key) return;
       setLoading(false);
@@ -120,7 +120,7 @@ const EditPost = ({ params }) => {
     const formData = new FormData();
     formData.append("filesUpload", file);
     try {
-      const res = await sendRequestFile({
+      const res = (await sendRequestFile({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/files/upload`,
         method: "POST",
         body: formData,
@@ -130,7 +130,7 @@ const EditPost = ({ params }) => {
         headers: {
           Authorization: `Bearer ${session?.access_token}`,
         },
-      });
+      })) as any;
       setFile(
         res.data.fileNames.map((item: any) => {
           return {
@@ -152,7 +152,7 @@ const EditPost = ({ params }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
 
-  const handlePreview = async (file) => {
+  const handlePreview = async (file: any) => {
     getBase64(file.originFileObj, (url) => {
       setPreviewImage(url);
       setPreviewOpen(true);
@@ -174,7 +174,7 @@ const EditPost = ({ params }) => {
     return new Promise((resolve, reject) => {
       let reader = new FileReader();
 
-      reader.onload = async (e) => {
+      reader.onload = async (e: any) => {
         let img = new Image();
         img.src = e.target.result;
 
@@ -217,7 +217,7 @@ const EditPost = ({ params }) => {
       return;
     }
 
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/${slug}`,
       method: "PATCH",
       body: {
@@ -228,12 +228,12 @@ const EditPost = ({ params }) => {
               .split("#")
               .map((hashtag: any) => hashtag.trim())
           : [],
-        files: file.length === 0 ? [] : file.map((item) => item.name),
+        files: file.length === 0 ? [] : file.map((item: any) => item.name),
       },
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
-    });
+    })) as any;
     if (res.data) {
       message.success(res.message);
       router.push(`/Post/${slug}`);
@@ -248,7 +248,7 @@ const EditPost = ({ params }) => {
 
   const [form] = Form.useForm();
   const fetchTweetById = async () => {
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/${slug}`,
       method: "GET",
       headers: {
@@ -257,7 +257,7 @@ const EditPost = ({ params }) => {
       nextOption: {
         cache: "no-store",
       },
-    });
+    })) as any;
     if (res.data) {
       // console.log({
       //   ...res.data,

@@ -11,7 +11,7 @@ const items = new Array(15).fill(null).map((_, index) => ({
   label: `nav ${index + 1}`,
 }));
 
-const App: React.FC = ({ children }: { children: React.ReactNode }) => {
+const App = ({ children }: { children: React.ReactNode }) => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();

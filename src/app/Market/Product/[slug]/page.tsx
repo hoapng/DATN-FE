@@ -3,7 +3,7 @@ import ViewDetail from "@/components/product/ViewDetail";
 import { sendRequest } from "@/utils/api";
 import { useEffect, useState } from "react";
 
-const BookPage = ({ params }) => {
+const BookPage = ({ params }: any) => {
   const [dataBook, setDataBook] = useState();
 
   const { slug } = params; // slug
@@ -12,8 +12,8 @@ const BookPage = ({ params }) => {
     fetchBook(slug);
   }, [slug]);
 
-  const fetchBook = async (slug) => {
-    const res = await sendRequest({
+  const fetchBook = async (slug: any) => {
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products/${slug}`,
       method: "GET",
       queryParams: {
@@ -22,7 +22,7 @@ const BookPage = ({ params }) => {
       nextOption: {
         cache: "no-store",
       },
-    });
+    })) as any;
 
     if (res && res.data) {
       let raw = res.data;
@@ -35,8 +35,8 @@ const BookPage = ({ params }) => {
     }
   };
 
-  const getImages = (raw) => {
-    const images = [];
+  const getImages = (raw: any) => {
+    const images: any = [];
     // if (raw.thumbnail) {
     //   images.push({
     //     original: `${import.meta.env.VITE_BACKEND_URL}/images/book/${
@@ -50,7 +50,7 @@ const BookPage = ({ params }) => {
     //   });
     // }
     if (raw.files) {
-      raw.files?.map((item) => {
+      raw.files?.map((item: any) => {
         images.push({
           original: `${process.env.NEXT_PUBLIC_BACKEND_URL}/images/uploadedFiles/${item}`,
           thumbnail: `${process.env.NEXT_PUBLIC_BACKEND_URL}/images/uploadedFiles/${item}`,

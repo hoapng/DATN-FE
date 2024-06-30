@@ -14,7 +14,7 @@ import Link from "next/link";
 import authOptions from "./api/authOptions";
 
 const getNews = async () => {
-  const res = await sendRequest({
+  const res = (await sendRequest({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/`,
     method: "GET",
     queryParams: {
@@ -29,7 +29,7 @@ const getNews = async () => {
     // headers: {
     //   Authorization: `Bearer ${session?.access_token}`,
     // },
-  });
+  })) as any;
 
   if (res.data) {
     return res.data;
@@ -37,7 +37,7 @@ const getNews = async () => {
 };
 
 const getReview = async () => {
-  const res = await sendRequest({
+  const res = (await sendRequest({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/`,
     method: "GET",
     queryParams: {
@@ -52,7 +52,7 @@ const getReview = async () => {
     // headers: {
     //   Authorization: `Bearer ${session?.access_token}`,
     // },
-  });
+  })) as any;
 
   if (res.data) {
     return res.data;
@@ -60,7 +60,7 @@ const getReview = async () => {
 };
 
 const getTips = async () => {
-  const res = await sendRequest({
+  const res = (await sendRequest({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/`,
     method: "GET",
     queryParams: {
@@ -75,7 +75,7 @@ const getTips = async () => {
     // headers: {
     //   Authorization: `Bearer ${session?.access_token}`,
     // },
-  });
+  })) as any;
 
   if (res.data) {
     return res.data;
@@ -83,7 +83,7 @@ const getTips = async () => {
 };
 
 const getQuestion = async () => {
-  const res = await sendRequest({
+  const res = (await sendRequest({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/`,
     method: "GET",
     queryParams: {
@@ -98,7 +98,7 @@ const getQuestion = async () => {
     // headers: {
     //   Authorization: `Bearer ${session?.access_token}`,
     // },
-  });
+  })) as any;
 
   if (res.data) {
     return res.data;

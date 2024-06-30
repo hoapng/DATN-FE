@@ -7,7 +7,7 @@ const ReactQuill = dynamic(
   async () => {
     const { default: RQ } = await import("react-quill");
 
-    const QuillComponent = ({ forwardedRef, ...props }) => {
+    const QuillComponent = ({ forwardedRef, ...props }: any) => {
       return <RQ ref={forwardedRef} {...props} />;
     };
 
@@ -22,7 +22,7 @@ import { message } from "antd";
 
 export default function Editor(props: any) {
   const { value, onChange } = props;
-  const reactQuillRef = useRef<typeof ReactQuill>();
+  const reactQuillRef = useRef<any>();
   const insertImage = () => {
     let quillObj = reactQuillRef.current?.getEditor();
     const range = quillObj.getSelection();
@@ -37,7 +37,7 @@ export default function Editor(props: any) {
       var file: any = input && input.files ? input.files[0] : null;
       let reader = new FileReader();
 
-      reader.onload = async (e) => {
+      reader.onload = async (e: any) => {
         let img = new Image();
         img.src = e.target.result;
         img.onload = async function () {

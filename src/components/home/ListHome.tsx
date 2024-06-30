@@ -6,13 +6,13 @@ import { sendRequest } from "@/utils/api";
 import PostCard from "../post/PostCard";
 
 const ListHome: React.FC = (props: any) => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<any>([]);
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(0);
 
   const getData = async () => {
-    const res = await sendRequest({
+    const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/`,
       method: "GET",
       queryParams: {
@@ -28,7 +28,7 @@ const ListHome: React.FC = (props: any) => {
       // headers: {
       //   Authorization: `Bearer ${session?.access_token}`,
       // },
-    });
+    })) as any;
 
     if (res.data) {
       setData(res.data);
@@ -39,7 +39,7 @@ const ListHome: React.FC = (props: any) => {
     getData();
   }, [current, pageSize]);
 
-  const handleOnchangePage = (pagination) => {
+  const handleOnchangePage = (pagination: any) => {
     if (pagination && pagination.current !== current) {
       setCurrent(pagination.current);
     }
@@ -51,7 +51,7 @@ const ListHome: React.FC = (props: any) => {
 
   return (
     <div className="w-full md:w-2/3 flex flex-col gap-y-28 md:gap-y-14">
-      {data?.result?.map((post, index) => {
+      {data?.result?.map((post: any, index: any) => {
         return <PostCard key={index} post={post} />;
       })}
       <Pagination
