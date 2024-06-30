@@ -8,7 +8,6 @@ import { Badge, Button } from "flowbite-react";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import Filter from "bad-words";
-import { badWords, blackList } from "vn-badwords";
 import DeletePost from "./DeletePost";
 
 const getBadWords = async () => {
