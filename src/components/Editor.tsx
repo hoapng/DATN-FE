@@ -7,7 +7,13 @@ const ReactQuill = dynamic(
   async () => {
     const { default: RQ } = await import("react-quill");
 
-    return ({ forwardedRef, ...props }) => <RQ ref={forwardedRef} {...props} />;
+    const QuillComponent = ({ forwardedRef, ...props }) => {
+      return <RQ ref={forwardedRef} {...props} />;
+    };
+
+    QuillComponent.displayName = "QuillComponent";
+
+    return QuillComponent;
   },
   { ssr: false }
 );
