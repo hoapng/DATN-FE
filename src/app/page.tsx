@@ -119,7 +119,7 @@ const App: React.FC = async () => {
     <div className="p-3 max-w-7xl mx-auto min-h-screen">
       <div className="flex flex-col">
         <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
-          <Carousel className="w-full" slide={false}>
+          <Carousel className="w-full">
             {news.result.map((x: any, index: number) => {
               return (
                 <div key={index}>
