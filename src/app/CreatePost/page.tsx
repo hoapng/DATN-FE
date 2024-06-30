@@ -126,7 +126,7 @@ export default function CreatePost() {
     const formData = new FormData();
     formData.append("filesUpload", file);
     try {
-      const res = await sendRequestFile({
+      const res = (await sendRequestFile({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/files/upload`,
         method: "POST",
         body: formData,
@@ -136,7 +136,7 @@ export default function CreatePost() {
         headers: {
           Authorization: `Bearer ${session?.access_token}`,
         },
-      });
+      })) as any;
       setFile(res.data.fileNames);
       onSuccess("ok");
     } catch (error) {
