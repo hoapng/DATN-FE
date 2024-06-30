@@ -25,7 +25,7 @@ const CommentsTable = () => {
   const fetchComments = async () => {
     setIsLoading(true);
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/comments`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comments`,
       method: "GET",
       queryParams: {
         current: current,
@@ -50,7 +50,7 @@ const CommentsTable = () => {
 
   const handleDeleteComments = async (_id) => {
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/tweets/${_id}`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/${_id}`,
       method: "DELETE",
       nextOption: {
         cache: "no-store",

@@ -14,7 +14,7 @@ export default function DeletePost({ postId }: { postId: any }) {
     console.log(_id);
     try {
       const res = await sendRequest({
-        url: `http://localhost:8000/api/v1/tweets/${_id}`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/${_id}`,
         method: "DELETE",
         nextOption: {
           cache: "no-store",

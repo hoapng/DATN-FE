@@ -58,7 +58,7 @@ export default function SearchBar() {
 
     try {
       const res = await sendRequest<ApiPostResponse>({
-        url: `http://localhost:8000/api/v1/tweets`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets`,
         method: "GET",
         queryParams: {
           current: current,
@@ -80,7 +80,7 @@ export default function SearchBar() {
         const postsWithUserNames = await Promise.all(
           posts.map(async (post) => {
             const userRes = await sendRequest<ApiUserResponse>({
-              url: `http://localhost:8000/api/v1/users/${post.createdBy}`,
+              url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/${post.createdBy}`,
               method: "GET",
               nextOption: {
                 cache: "no-store",

@@ -15,7 +15,7 @@ import Link from "next/link";
 
 const getNews = async () => {
   const res = await sendRequest({
-    url: `http://localhost:8000/api/v1/tweets/`,
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/`,
     method: "GET",
     queryParams: {
       current: 1,
@@ -38,7 +38,7 @@ const getNews = async () => {
 
 const getReview = async () => {
   const res = await sendRequest({
-    url: `http://localhost:8000/api/v1/tweets/`,
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/`,
     method: "GET",
     queryParams: {
       current: 1,
@@ -61,7 +61,7 @@ const getReview = async () => {
 
 const getTips = async () => {
   const res = await sendRequest({
-    url: `http://localhost:8000/api/v1/tweets/`,
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/`,
     method: "GET",
     queryParams: {
       current: 1,
@@ -84,7 +84,7 @@ const getTips = async () => {
 
 const getQuestion = async () => {
   const res = await sendRequest({
-    url: `http://localhost:8000/api/v1/tweets/`,
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/`,
     method: "GET",
     queryParams: {
       current: 1,

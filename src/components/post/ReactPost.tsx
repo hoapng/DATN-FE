@@ -25,7 +25,7 @@ const ReactPost = (props: any) => {
 
   const fetchData = async () => {
     const res2 = await sendRequest({
-      url: `http://localhost:8000/api/v1/likes`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
       method: "GET",
       queryParams: {
         current: 1,
@@ -48,7 +48,7 @@ const ReactPost = (props: any) => {
   const checkLike = async () => {
     if (session) {
       const res1 = await sendRequest({
-        url: `http://localhost:8000/api/v1/likes`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
         method: "GET",
         queryParams: {
           createdBy: session?.user._id,
@@ -72,7 +72,7 @@ const ReactPost = (props: any) => {
 
   const handleLikePost = async () => {
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/likes`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
       method: "POST",
       body: {
         tweet: post?._id,
@@ -92,7 +92,7 @@ const ReactPost = (props: any) => {
   };
   const handleUnlikePost = async () => {
     await sendRequest({
-      url: `http://localhost:8000/api/v1/likes/${post?._id}`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes/${post?._id}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${session?.access_token}`,

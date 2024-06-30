@@ -45,7 +45,7 @@ const EditPost = ({ params }) => {
     let date = new Date();
 
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/hashtag/top`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/hashtag/top`,
       method: "GET",
       queryParams: {
         current: 1,
@@ -121,7 +121,7 @@ const EditPost = ({ params }) => {
     formData.append("filesUpload", file);
     try {
       const res = await sendRequestFile({
-        url: `http://localhost:8000/api/v1/files/upload`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/files/upload`,
         method: "POST",
         body: formData,
         nextOption: {
@@ -218,7 +218,7 @@ const EditPost = ({ params }) => {
     }
 
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/tweets/${slug}`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/${slug}`,
       method: "PATCH",
       body: {
         ...values,
@@ -249,7 +249,7 @@ const EditPost = ({ params }) => {
   const [form] = Form.useForm();
   const fetchTweetById = async () => {
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/tweets/${slug}`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/${slug}`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${session?.access_token}`,

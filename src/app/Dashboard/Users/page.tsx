@@ -26,7 +26,7 @@ const UsersTable = () => {
   const fetchUsers = async () => {
     setIsLoading(true);
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/users`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users`,
       method: "GET",
       queryParams: {
         current: current,
@@ -51,7 +51,7 @@ const UsersTable = () => {
 
   const handleDeleteUsers = async (_id) => {
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/users/${_id}`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/${_id}`,
       method: "DELETE",
       nextOption: {
         cache: "no-store",

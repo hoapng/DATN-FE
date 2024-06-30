@@ -19,7 +19,7 @@ export default function Comment({ comment, onDelete, getComments }) {
 
   const handleSave = async () => {
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/comments/${comment._id}`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comments/${comment._id}`,
       method: "PATCH",
       body: {
         content: editedContent,

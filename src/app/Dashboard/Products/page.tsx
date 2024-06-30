@@ -25,7 +25,7 @@ const ProductsTable = () => {
   const fetchProducts = async () => {
     setIsLoading(true);
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/products`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products`,
       method: "GET",
       queryParams: {
         current: current,
@@ -50,7 +50,7 @@ const ProductsTable = () => {
 
   const handleDeleteProducts = async (_id) => {
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/products/${_id}`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products/${_id}`,
       method: "DELETE",
       nextOption: {
         cache: "no-store",

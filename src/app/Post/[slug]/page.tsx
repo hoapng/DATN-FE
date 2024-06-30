@@ -12,7 +12,7 @@ import DeletePost from "./DeletePost";
 
 const getBadWords = async () => {
   const res = await sendRequest({
-    url: `http://localhost:8000/api/v1/badwords`,
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/badwords`,
     method: "GET",
     nextOption: {
       cache: "no-store",
@@ -33,7 +33,7 @@ const customFilter = new Filter({
 
 const getData = async (slug: string) => {
   const res = await sendRequest({
-    url: `http://localhost:8000/api/v1/tweets/${slug}`,
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/${slug}`,
     method: "GET",
     queryParams: {
       populate: "createdBy",
@@ -53,7 +53,7 @@ const getData = async (slug: string) => {
 
 const getSamePosts = async (slug: string) => {
   const res = await sendRequest({
-    url: `http://localhost:8000/api/v1/tweets/recommend/${slug}`,
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/recommend/${slug}`,
     method: "GET",
     queryParams: {
       sort: "-updatedAt",

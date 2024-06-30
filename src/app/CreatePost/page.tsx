@@ -51,7 +51,7 @@ export default function CreatePost() {
     let date = new Date();
 
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/hashtag/top`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/hashtag/top`,
       method: "GET",
       queryParams: {
         current: 1,
@@ -127,7 +127,7 @@ export default function CreatePost() {
     formData.append("filesUpload", file);
     try {
       const res = await sendRequestFile({
-        url: `http://localhost:8000/api/v1/files/upload`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/files/upload`,
         method: "POST",
         body: formData,
         nextOption: {
@@ -218,7 +218,7 @@ export default function CreatePost() {
     //   files: file,
     // });
     const res = await sendRequest({
-      url: "http://localhost:8000/api/v1/tweets",
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets`,
       method: "POST",
       body: {
         ...values,

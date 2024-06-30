@@ -31,7 +31,7 @@ const Post: React.FC = (props: any) => {
 
   // const handleCheckBookmark = async (tweet_id: string) => {
   //   const res = await sendRequest({
-  //     url: `http://localhost:8000/api/v1/bookmarks/${tweet_id}`,
+  //     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/bookmarks/${tweet_id}`,
   //     method: "GET",
   //     headers: {
   //       Authorization: `Bearer ${session?.access_token}`,

@@ -26,7 +26,7 @@ const BadwordsTable = () => {
   const fetchBadwords = async () => {
     setIsLoading(true);
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/badwords`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/badwords`,
       method: "GET",
       queryParams: {
         current: current,
@@ -51,7 +51,7 @@ const BadwordsTable = () => {
 
   const handleDeleteBadwords = async (_id) => {
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/badwords/${_id}`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/badwords/${_id}`,
       method: "DELETE",
       nextOption: {
         cache: "no-store",
@@ -126,7 +126,7 @@ const BadwordsTable = () => {
 
   const handleCreate = async (word) => {
     const res = await sendRequest({
-      url: "http://localhost:8000/api/v1/badwords",
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/badwords`,
       method: "POST",
       body: {
         word: word,

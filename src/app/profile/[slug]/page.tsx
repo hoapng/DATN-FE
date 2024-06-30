@@ -7,7 +7,7 @@ import React from "react";
 
 const getProfile = async (slug: string) => {
   const res = await sendRequest({
-    url: `http://localhost:8000/api/v1/users/${slug}`,
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/${slug}`,
     method: "GET",
     nextOption: {
       cache: "no-store",
@@ -24,7 +24,7 @@ const getProfile = async (slug: string) => {
 
 const getFollowers = async (slug: string) => {
   const res = await sendRequest({
-    url: `http://localhost:8000/api/v1/followers`,
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/followers`,
     method: "GET",
     queryParams: {
       current: 1,
@@ -46,7 +46,7 @@ const getFollowers = async (slug: string) => {
 
 const getFollowing = async (slug: string) => {
   const res = await sendRequest({
-    url: `http://localhost:8000/api/v1/followers`,
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/followers`,
     method: "GET",
     queryParams: {
       current: 1,
@@ -68,7 +68,7 @@ const getFollowing = async (slug: string) => {
 
 const getPosts = async (slug: string) => {
   const res = await sendRequest({
-    url: `http://localhost:8000/api/v1/tweets`,
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets`,
     method: "GET",
     queryParams: {
       current: 1,

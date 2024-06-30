@@ -21,7 +21,7 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user, account, profile, trigger }) {
       if (trigger === "signIn" && account?.provider !== "credentials") {
         const res = await sendRequest<IBackendRes<JWT>>({
-          url: "http://localhost:8000/api/v1/auth/provider",
+          url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/provider`,
           method: "POST",
           body: {
             name: user.name,

@@ -14,7 +14,7 @@ const BookPage = ({ params }) => {
 
   const fetchBook = async (slug) => {
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/products/${slug}`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products/${slug}`,
       method: "GET",
       queryParams: {
         populate: "createdBy",
