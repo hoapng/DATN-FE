@@ -45,7 +45,7 @@ export default function Header() {
             </Dropdown.Header>
             {session.user.role === "admin" ? (
               <>
-                <Link href={"/Dashboard"}>
+                <Link href={"/Dashboard/Posts"}>
                   <Dropdown.Item>Dashboard</Dropdown.Item>
                 </Link>
                 <Dropdown.Divider />

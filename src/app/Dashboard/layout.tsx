@@ -1,17 +1,24 @@
 import DashSidebar from "@/components/dashboard/DashSidebar";
+import { getServerSession } from "next-auth";
+import authOptions from "../api/authOptions";
+import { redirect } from "next/navigation";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-      <div className="md:w-56">
-        {/* Sidebar */}
-        <DashSidebar />
+  const session = await getServerSession(authOptions);
+  if (session?.user.role === "admin")
+    return (
+      <div className="min-h-screen flex flex-col md:flex-row">
+        <div className="md:w-56">
+          {/* Sidebar */}
+          <DashSidebar />
+        </div>
+
+        {children}
       </div>
-      {children}
-    </div>
-  );
+    );
+  else return redirect("/");
 }
