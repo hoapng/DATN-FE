@@ -1,6 +1,7 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import TabsHome from "@/components/home/TabsHome";
 import { sendRequest } from "@/utils/api";
+import { Button } from "flowbite-react";
 import { getServerSession } from "next-auth";
 import React from "react";
 
@@ -110,6 +111,12 @@ const Profile = async ({ params }) => {
           <div className="flex gap-10">
             <div className="flex flex-col items-center">
               <p className="text-gray-300 text-2xl font-semibold">
+                {posts?.meta?.total}
+              </p>
+              <span className="text-gray-500">Posts</span>
+            </div>
+            {/* <div className="flex flex-col items-center">
+              <p className="text-gray-300 text-2xl font-semibold">
                 {followers?.meta?.total ?? 0}
               </p>
               <span className="text-gray-500">Followers</span>
@@ -121,13 +128,13 @@ const Profile = async ({ params }) => {
               </p>
               <span className="text-gray-500">Following</span>
             </div>
-
-            <div className="flex flex-col items-center">
-              <p className="text-gray-300 text-2xl font-semibold">
-                {posts?.meta?.total}
-              </p>
-              <span className="text-gray-500">Posts</span>
-            </div>
+            {session?.user._id !== slug ? (
+              <div className="flex flex-col items-center">
+                <Button>Follow</Button>
+              </div>
+            ) : (
+              <></>
+            )} */}
           </div>
 
           {/* {user?.token && (

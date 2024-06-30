@@ -17,6 +17,11 @@ import { message } from "antd";
 export default function Editor(props: any) {
   const { value, onChange } = props;
   const reactQuillRef = useRef<typeof ReactQuill>();
+  const insertImage = () => {
+    let quillObj = reactQuillRef.current?.getEditor();
+    const range = quillObj.getSelection();
+    quillObj.editor.insertEmbed(range.index, "image", e.target.result);
+  };
   const imageHandler = useCallback(async () => {
     const input = document.createElement("input");
     input.setAttribute("type", "file");
@@ -44,9 +49,7 @@ export default function Editor(props: any) {
           });
 
           if (isSafe) {
-            let quillObj = reactQuillRef.current?.getEditor();
-            const range = quillObj.getSelection();
-            quillObj.editor.insertEmbed(range.index, "image", e.target.result);
+            insertImage();
           } else {
             message.error("Hình ảnh không phù hợp!");
           }

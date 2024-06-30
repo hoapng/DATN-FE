@@ -4,12 +4,12 @@ import { Table, Row, Col, Button, Popconfirm, message } from "antd";
 import { DeleteTwoTone } from "@ant-design/icons";
 import { sendRequest } from "@/utils/api";
 import { useSession } from "next-auth/react";
-import InputPostsSearch from "@/components/dashboard/InputPostsSearch";
+import InputProductsSearch from "@/components/dashboard/InputProductsSearch ";
 
 // https://stackblitz.com/run?file=demo.tsx
-const PostsTable = () => {
+const ProductsTable = () => {
   const { data: session } = useSession();
-  const [listPosts, setListPosts] = useState([]);
+  const [listProducts, setListProducts] = useState([]);
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(0);
@@ -19,13 +19,13 @@ const PostsTable = () => {
   const [filter, setFilter] = useState({});
   const [sortQuery, setSortQuery] = useState("-updatedAt");
   useEffect(() => {
-    fetchPosts();
+    fetchProducts();
   }, [current, pageSize, filter, sortQuery]);
 
-  const fetchPosts = async () => {
+  const fetchProducts = async () => {
     setIsLoading(true);
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/tweets`,
+      url: `http://localhost:8000/api/v1/products`,
       method: "GET",
       queryParams: {
         current: current,
@@ -41,16 +41,16 @@ const PostsTable = () => {
       },
     });
     if (res && res.data) {
-      setListPosts(res.data.result);
+      setListProducts(res.data.result);
       setTotal(res.data.meta.total);
       // console.log(res.data.result);
     }
     setIsLoading(false);
   };
 
-  const handleDeletePosts = async (_id) => {
+  const handleDeleteProducts = async (_id) => {
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/tweets/${_id}`,
+      url: `http://localhost:8000/api/v1/products/${_id}`,
       method: "DELETE",
       nextOption: {
         cache: "no-store",
@@ -61,7 +61,7 @@ const PostsTable = () => {
     });
     if (res && res.data) {
       message.success("Thành công");
-      fetchPosts();
+      fetchProducts();
     } else {
       message.error({ message: "Lỗi", description: res.message });
     }
@@ -72,17 +72,17 @@ const PostsTable = () => {
       title: "_id",
       dataIndex: "_id",
       render: (text, record, index) => {
-        return <a href={`/Post/${record._id}`}>{record._id}</a>;
+        return <a href={`/Market/Product/${record._id}`}>{record._id}</a>;
       },
     },
     {
-      title: "type",
-      dataIndex: "type",
+      title: "price",
+      dataIndex: "price",
       sorter: true,
     },
     {
-      title: "title",
-      dataIndex: "title",
+      title: "name",
+      dataIndex: "name",
       sorter: true,
     },
     {
@@ -104,11 +104,6 @@ const PostsTable = () => {
       sorter: true,
     },
     {
-      title: "updatedAt",
-      dataIndex: "updatedAt",
-      sorter: true,
-    },
-    {
       title: "action",
       render: (text, record, index) => {
         return (
@@ -117,7 +112,7 @@ const PostsTable = () => {
               placement="leftTop"
               title={"Confirm Delete"}
               description={`${record._id}`}
-              onConfirm={() => handleDeletePosts(record._id)}
+              onConfirm={() => handleDeleteProducts(record._id)}
             >
               <span style={{ cursor: "pointer", margin: "0 20px" }}>
                 <DeleteTwoTone twoToneColor="#ff4d4f" />
@@ -169,7 +164,10 @@ const PostsTable = () => {
     <div className="w-full">
       <Row gutter={[20, 20]}>
         <Col span={24}>
-          <InputPostsSearch handleSearch={handleSearch} setFilter={setFilter} />
+          <InputProductsSearch
+            handleSearch={handleSearch}
+            setFilter={setFilter}
+          />
         </Col>
         <Col span={24}>
           <Table
@@ -177,7 +175,7 @@ const PostsTable = () => {
             loading={isLoading}
             className="def"
             columns={columns}
-            dataSource={listPosts}
+            dataSource={listProducts}
             onChange={onChange}
             pagination={{
               current: current,
@@ -199,4 +197,4 @@ const PostsTable = () => {
   );
 };
 
-export default PostsTable;
+export default ProductsTable;

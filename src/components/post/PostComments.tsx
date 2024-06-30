@@ -8,7 +8,7 @@ import Link from "next/link";
 import { sendRequest } from "@/utils/api";
 import { message } from "antd";
 
-export default function CommentSection({ postId }) {
+export default function CommentSection({ postId }: { postId: any }) {
   const { data: session } = useSession();
 
   const [comment, setComment] = useState("");

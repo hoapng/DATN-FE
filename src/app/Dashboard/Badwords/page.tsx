@@ -4,12 +4,13 @@ import { Table, Row, Col, Button, Popconfirm, message } from "antd";
 import { DeleteTwoTone } from "@ant-design/icons";
 import { sendRequest } from "@/utils/api";
 import { useSession } from "next-auth/react";
-import InputPostsSearch from "@/components/dashboard/InputPostsSearch";
+import InputBadwordsSearch from "@/components/dashboard/InputBadwordsSearch";
+import InputBadwordsCreate from "@/components/dashboard/InputBadwordsCreate";
 
 // https://stackblitz.com/run?file=demo.tsx
-const PostsTable = () => {
+const BadwordsTable = () => {
   const { data: session } = useSession();
-  const [listPosts, setListPosts] = useState([]);
+  const [listBadwords, setListBadwords] = useState([]);
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(0);
@@ -19,13 +20,13 @@ const PostsTable = () => {
   const [filter, setFilter] = useState({});
   const [sortQuery, setSortQuery] = useState("-updatedAt");
   useEffect(() => {
-    fetchPosts();
+    fetchBadwords();
   }, [current, pageSize, filter, sortQuery]);
 
-  const fetchPosts = async () => {
+  const fetchBadwords = async () => {
     setIsLoading(true);
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/tweets`,
+      url: `http://localhost:8000/api/v1/badwords`,
       method: "GET",
       queryParams: {
         current: current,
@@ -41,16 +42,16 @@ const PostsTable = () => {
       },
     });
     if (res && res.data) {
-      setListPosts(res.data.result);
+      setListBadwords(res.data.result);
       setTotal(res.data.meta.total);
       // console.log(res.data.result);
     }
     setIsLoading(false);
   };
 
-  const handleDeletePosts = async (_id) => {
+  const handleDeleteBadwords = async (_id) => {
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/tweets/${_id}`,
+      url: `http://localhost:8000/api/v1/badwords/${_id}`,
       method: "DELETE",
       nextOption: {
         cache: "no-store",
@@ -61,7 +62,7 @@ const PostsTable = () => {
     });
     if (res && res.data) {
       message.success("Thành công");
-      fetchPosts();
+      fetchBadwords();
     } else {
       message.error({ message: "Lỗi", description: res.message });
     }
@@ -71,41 +72,15 @@ const PostsTable = () => {
     {
       title: "_id",
       dataIndex: "_id",
-      render: (text, record, index) => {
-        return <a href={`/Post/${record._id}`}>{record._id}</a>;
-      },
     },
     {
-      title: "type",
-      dataIndex: "type",
+      title: "word",
+      dataIndex: "word",
       sorter: true,
-    },
-    {
-      title: "title",
-      dataIndex: "title",
-      sorter: true,
-    },
-    {
-      title: "image",
-      dataIndex: "image",
-      render: (text, record, index) => {
-        return (
-          <img
-            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/uploadedFiles/${record.files[0]}`}
-            alt={record.title}
-            className="w-20 h-10 object-cover bg-gray-500"
-          />
-        );
-      },
     },
     {
       title: "createdAt",
       dataIndex: "createdAt",
-      sorter: true,
-    },
-    {
-      title: "updatedAt",
-      dataIndex: "updatedAt",
       sorter: true,
     },
     {
@@ -117,7 +92,7 @@ const PostsTable = () => {
               placement="leftTop"
               title={"Confirm Delete"}
               description={`${record._id}`}
-              onConfirm={() => handleDeletePosts(record._id)}
+              onConfirm={() => handleDeleteBadwords(record._id)}
             >
               <span style={{ cursor: "pointer", margin: "0 20px" }}>
                 <DeleteTwoTone twoToneColor="#ff4d4f" />
@@ -149,6 +124,25 @@ const PostsTable = () => {
     setFilter(query);
   };
 
+  const handleCreate = async (word) => {
+    const res = await sendRequest({
+      url: "http://localhost:8000/api/v1/badwords",
+      method: "POST",
+      body: {
+        word: word,
+      },
+      headers: {
+        Authorization: `Bearer ${session?.access_token}`,
+      },
+    });
+    if (res.data) {
+      message.success(res.message);
+      fetchBadwords();
+    } else {
+      message.error(res.message);
+    }
+  };
+
   const renderHeader = () => {
     return (
       <div className="flex justify-between">
@@ -169,7 +163,11 @@ const PostsTable = () => {
     <div className="w-full">
       <Row gutter={[20, 20]}>
         <Col span={24}>
-          <InputPostsSearch handleSearch={handleSearch} setFilter={setFilter} />
+          <InputBadwordsSearch
+            handleSearch={handleSearch}
+            setFilter={setFilter}
+          />
+          <InputBadwordsCreate handleCreate={handleCreate} />
         </Col>
         <Col span={24}>
           <Table
@@ -177,7 +175,7 @@ const PostsTable = () => {
             loading={isLoading}
             className="def"
             columns={columns}
-            dataSource={listPosts}
+            dataSource={listBadwords}
             onChange={onChange}
             pagination={{
               current: current,
@@ -199,4 +197,4 @@ const PostsTable = () => {
   );
 };
 
-export default PostsTable;
+export default BadwordsTable;

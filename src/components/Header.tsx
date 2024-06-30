@@ -43,10 +43,16 @@ export default function Header() {
                 {session.user.email}
               </span>
             </Dropdown.Header>
-            {/* <Link href={"/dashboard?tab=profile"}>
-              <Dropdown.Item>Profile</Dropdown.Item>
-            </Link>
-            <Dropdown.Divider /> */}
+            {session.user.role === "admin" ? (
+              <>
+                <Link href={"/Dashboard"}>
+                  <Dropdown.Item>Dashboard</Dropdown.Item>
+                </Link>
+                <Dropdown.Divider />
+              </>
+            ) : (
+              <></>
+            )}
             <Dropdown.Item
               onClick={() => {
                 signOut();

@@ -44,7 +44,7 @@ const UsersTable = () => {
     if (res && res.data) {
       setListUsers(res.data.result);
       setTotal(res.data.meta.total);
-      console.log(res.data.result);
+      // console.log(res.data.result);
     }
     setIsLoading(false);
   };

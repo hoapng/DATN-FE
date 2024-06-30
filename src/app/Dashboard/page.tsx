@@ -1,5 +1,7 @@
+"use client";
+import { useRouter } from "next/navigation";
+
 export default function Dashboard() {
-  return (
-    <div className="min-h-screen flex flex-col md:flex-row">Dashboard</div>
-  );
+  const router = useRouter();
+  return router.push("/Dashboard/Posts");
 }

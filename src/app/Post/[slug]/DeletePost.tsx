@@ -6,7 +6,7 @@ import { sendRequest } from "@/utils/api";
 import { useSession } from "next-auth/react";
 
 export default function DeletePost({ postId }: { postId: any }) {
-  console.log(postId);
+  // console.log(postId);
   const router = useRouter();
   const { data: session } = useSession();
 

@@ -7,9 +7,9 @@ import { useSession } from "next-auth/react";
 import InputPostsSearch from "@/components/dashboard/InputPostsSearch";
 
 // https://stackblitz.com/run?file=demo.tsx
-const PostsTable = () => {
+const CommentsTable = () => {
   const { data: session } = useSession();
-  const [listPosts, setListPosts] = useState([]);
+  const [listComments, setListComments] = useState([]);
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(0);
@@ -19,13 +19,13 @@ const PostsTable = () => {
   const [filter, setFilter] = useState({});
   const [sortQuery, setSortQuery] = useState("-updatedAt");
   useEffect(() => {
-    fetchPosts();
+    fetchComments();
   }, [current, pageSize, filter, sortQuery]);
 
-  const fetchPosts = async () => {
+  const fetchComments = async () => {
     setIsLoading(true);
     const res = await sendRequest({
-      url: `http://localhost:8000/api/v1/tweets`,
+      url: `http://localhost:8000/api/v1/comments`,
       method: "GET",
       queryParams: {
         current: current,
@@ -41,14 +41,14 @@ const PostsTable = () => {
       },
     });
     if (res && res.data) {
-      setListPosts(res.data.result);
+      setListComments(res.data.result);
       setTotal(res.data.meta.total);
       // console.log(res.data.result);
     }
     setIsLoading(false);
   };
 
-  const handleDeletePosts = async (_id) => {
+  const handleDeleteComments = async (_id) => {
     const res = await sendRequest({
       url: `http://localhost:8000/api/v1/tweets/${_id}`,
       method: "DELETE",
@@ -61,7 +61,7 @@ const PostsTable = () => {
     });
     if (res && res.data) {
       message.success("Thành công");
-      fetchPosts();
+      fetchComments();
     } else {
       message.error({ message: "Lỗi", description: res.message });
     }
@@ -71,32 +71,18 @@ const PostsTable = () => {
     {
       title: "_id",
       dataIndex: "_id",
+    },
+    {
+      title: "post",
+      dataIndex: "post",
       render: (text, record, index) => {
-        return <a href={`/Post/${record._id}`}>{record._id}</a>;
+        return <a href={`/Post/${record.post}`}>{record.post}</a>;
       },
     },
     {
-      title: "type",
-      dataIndex: "type",
+      title: "content",
+      dataIndex: "content",
       sorter: true,
-    },
-    {
-      title: "title",
-      dataIndex: "title",
-      sorter: true,
-    },
-    {
-      title: "image",
-      dataIndex: "image",
-      render: (text, record, index) => {
-        return (
-          <img
-            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/uploadedFiles/${record.files[0]}`}
-            alt={record.title}
-            className="w-20 h-10 object-cover bg-gray-500"
-          />
-        );
-      },
     },
     {
       title: "createdAt",
@@ -117,7 +103,7 @@ const PostsTable = () => {
               placement="leftTop"
               title={"Confirm Delete"}
               description={`${record._id}`}
-              onConfirm={() => handleDeletePosts(record._id)}
+              onConfirm={() => handleDeleteComments(record._id)}
             >
               <span style={{ cursor: "pointer", margin: "0 20px" }}>
                 <DeleteTwoTone twoToneColor="#ff4d4f" />
@@ -168,16 +154,16 @@ const PostsTable = () => {
   return (
     <div className="w-full">
       <Row gutter={[20, 20]}>
-        <Col span={24}>
+        {/* <Col span={24}>
           <InputPostsSearch handleSearch={handleSearch} setFilter={setFilter} />
-        </Col>
+        </Col> */}
         <Col span={24}>
           <Table
-            title={renderHeader}
+            // title={renderHeader}
             loading={isLoading}
             className="def"
             columns={columns}
-            dataSource={listPosts}
+            dataSource={listComments}
             onChange={onChange}
             pagination={{
               current: current,
@@ -199,4 +185,4 @@ const PostsTable = () => {
   );
 };
 
-export default PostsTable;
+export default CommentsTable;

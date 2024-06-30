@@ -1,7 +1,7 @@
 "use client";
 import { Card } from "antd";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { Typography } from "antd";
 
 const { Title } = Typography;

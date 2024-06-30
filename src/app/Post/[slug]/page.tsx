@@ -11,6 +11,27 @@ import Filter from "bad-words";
 import { badWords, blackList } from "vn-badwords";
 import DeletePost from "./DeletePost";
 
+const getBadWords = async () => {
+  const res = await sendRequest({
+    url: `http://localhost:8000/api/v1/badwords`,
+    method: "GET",
+    nextOption: {
+      cache: "no-store",
+    },
+  });
+
+  if (res.data && res.data.result) {
+    return res.data.result.map((x: any) => x.word);
+  }
+};
+
+const badWordList = await getBadWords();
+
+const customFilter = new Filter({
+  list: badWordList,
+  splitRegex: /(?:(?<= )|(?= )|(?<=<)|(?=<)|(?<=>)|(?=>)|(?<=&)|(?=&))/g,
+});
+
 const getData = async (slug: string) => {
   const res = await sendRequest({
     url: `http://localhost:8000/api/v1/tweets/${slug}`,
@@ -52,20 +73,6 @@ const getSamePosts = async (slug: string) => {
   }
 };
 
-const getBadWords = async () => {
-  const res = await sendRequest({
-    url: `http://localhost:8000/api/v1/badwords`,
-    method: "GET",
-    nextOption: {
-      cache: "no-store",
-    },
-  });
-
-  if (res.data && res.data.result) {
-    return res.data.result.map((x: any) => x.word);
-  }
-};
-
 const BlogDetails = async ({ params }) => {
   const { slug } = params;
 
@@ -74,13 +81,6 @@ const BlogDetails = async ({ params }) => {
   const post = await getData(slug);
 
   const samePosts = await getSamePosts(slug);
-
-  const badWordList = await getBadWords();
-
-  const customFilter = new Filter({
-    list: badWordList,
-    splitRegex: /(?:(?<= )|(?= )|(?<=<)|(?=<)|(?<=>)|(?=>)|(?<=&)|(?=&))/g,
-  });
 
   return (
     <div className="w-full px-0 md:px-10 py-8 2xl:px-20">
