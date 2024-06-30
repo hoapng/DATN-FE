@@ -1,5 +1,4 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
 import TabsHome from "@/components/home/TabsHome";
 import { Carousel, Timeline } from "flowbite-react";
 import {
@@ -12,6 +11,7 @@ import {
 } from "flowbite-react";
 import { sendRequest } from "@/utils/api";
 import Link from "next/link";
+import authOptions from "./api/authOptions";
 
 const getNews = async () => {
   const res = await sendRequest({

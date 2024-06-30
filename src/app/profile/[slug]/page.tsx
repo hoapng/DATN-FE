@@ -1,4 +1,4 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import authOptions from "@/app/api/authOptions";
 import TabsHome from "@/components/home/TabsHome";
 import { sendRequest } from "@/utils/api";
 import { Button } from "flowbite-react";

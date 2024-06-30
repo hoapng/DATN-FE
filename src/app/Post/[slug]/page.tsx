@@ -1,4 +1,3 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import ImagePost from "@/components/post/ImagePost";
 import CommentSection from "@/components/post/PostComments";
 import ReactPost from "@/components/post/ReactPost";
@@ -9,6 +8,7 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import Filter from "bad-words";
 import DeletePost from "./DeletePost";
+import authOptions from "@/app/api/authOptions";
 
 const getBadWords = async () => {
   const res = await sendRequest({
