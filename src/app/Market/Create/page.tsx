@@ -12,12 +12,12 @@ import { signIn, useSession } from "next-auth/react";
 import * as nsfwjs from "nsfwjs";
 import { useRouter } from "next/navigation";
 
-export enum ProductType {
-  New = "New",
-  LikeNew = "LikeNew",
-  Good = "Good",
-  Fine = "Fine",
-}
+// export enum ProductType {
+//   New = "New",
+//   LikeNew = "LikeNew",
+//   Good = "Good",
+//   Fine = "Fine",
+// }
 
 const normFile = (e: any) => {
   if (Array.isArray(e)) {
@@ -246,10 +246,10 @@ export default function CreatePost() {
       <Form onFinish={onFinish} layout="vertical">
         <Form.Item label="Tình trạng" name="status">
           <Select>
-            <Select.Option value={ProductType.New}>Mới</Select.Option>
-            <Select.Option value={ProductType.LikeNew}>Như mới</Select.Option>
-            <Select.Option value={ProductType.Good}>Tốt</Select.Option>
-            <Select.Option value={ProductType.Fine}>Ổn</Select.Option>
+            <Select.Option value={"New"}>Mới</Select.Option>
+            <Select.Option value={"LikeNew"}>Như mới</Select.Option>
+            <Select.Option value={"Good"}>Tốt</Select.Option>
+            <Select.Option value={"Fine"}>Ổn</Select.Option>
           </Select>
         </Form.Item>
 
