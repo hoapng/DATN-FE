@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { sendRequest } from "@/utils/api";
 import { JWT } from "next-auth/jwt";
 
-export const authOptions: AuthOptions = {
+const authOptions: AuthOptions = {
   secret: process.env.NO_SECRET,
   providers: [
     GitHubProvider({
