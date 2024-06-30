@@ -1,12 +1,11 @@
-import { sendRequest } from "@/utils/api";
 import NextAuth, { AuthOptions } from "next-auth";
-import { JWT } from "next-auth/jwt";
 import GitHubProvider from "next-auth/providers/github";
-import CredentialsProvider from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { NextApiRequest, NextApiResponse } from "next";
+import { sendRequest } from "@/utils/api";
+import { JWT } from "next-auth/jwt";
 
-const authOptions: AuthOptions = {
+export const authOptions: AuthOptions = {
   secret: process.env.NO_SECRET,
   providers: [
     GitHubProvider({
@@ -36,14 +35,9 @@ const authOptions: AuthOptions = {
           token.user = res.data.user;
         }
       }
-      // if (trigger === "signIn" && account?.provider === "credentials") {
-      //   token.access_token = user.access_token;
-      //   token.refresh_token = user.refresh_token;
-      //   token.user = user.user;
-      // }
       return token;
     },
-    session({ session, token, user }) {
+    async session({ session, token, user }) {
       if (token) {
         session.access_token = token.access_token;
         session.refresh_token = token.refresh_token;
@@ -53,7 +47,9 @@ const authOptions: AuthOptions = {
     },
   },
 };
-const handler = (req: NextApiRequest, res: NextApiResponse) => {
-  return NextAuth(req, res, authOptions);
+
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  return await NextAuth(req, res, authOptions);
 };
+
 export { handler as GET, handler as POST };
