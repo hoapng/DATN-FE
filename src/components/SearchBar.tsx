@@ -1,9 +1,8 @@
 "use client";
 
 import { sendRequest } from "@/utils/api";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Input } from "antd";
 
 interface Post {
@@ -23,124 +22,45 @@ interface ApiPostResponse {
   };
 }
 
-interface ApiUserResponse {
-  data: {
-    name: string;
-  };
-}
-
-const removeDiacritics = (str: string) => {
-  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-};
-
 const { Search } = Input;
 
 export default function SearchBar() {
-  const { data: session } = useSession();
-  const [listPosts, setListPosts] = useState<Post[]>([]);
-  const [current, setCurrent] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
-  const [total, setTotal] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [filter, setFilter] = useState({});
-  const [sortQuery, setSortQuery] = useState("-updatedAt");
   const [activeSearch, setActiveSearch] = useState<Post[]>([]);
   const [searchValue, setSearchValue] = useState("");
 
   const router = useRouter();
 
-  useEffect(() => {
-    fetchPosts();
-  }, [current, pageSize, filter, sortQuery]);
-
-  const fetchPosts = async () => {
-    setIsLoading(true);
-
-    try {
-      const res = await sendRequest<ApiPostResponse>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets`,
-        method: "GET",
-        queryParams: {
-          current: current,
-          pageSize: pageSize,
-          sort: sortQuery,
-          ...filter,
-        },
-        nextOption: {
-          cache: "no-store",
-        },
-        headers: {
-          Authorization: `Bearer ${session?.access_token}`,
-        },
-      });
-
-      if (res && res.data && res.data.result) {
-        const posts = res.data.result;
-
-        const postsWithUserNames = await Promise.all(
-          posts.map(async (post) => {
-            const userRes = await sendRequest<ApiUserResponse>({
-              url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/${post.createdBy}`,
-              method: "GET",
-              nextOption: {
-                cache: "no-store",
-              },
-              headers: {
-                Authorization: `Bearer ${session?.access_token}`,
-              },
-            });
-
-            if (userRes && userRes.data && userRes.data.name) {
-              post.userName = userRes.data.name;
-            }
-
-            return post;
-          })
-        );
-
-        setListPosts(postsWithUserNames);
-        setTotal(res.data.meta.total);
-      }
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-    }
-
-    setIsLoading(false);
-  };
-
-  const debounce = (func: Function, delay: number) => {
-    let timerId: NodeJS.Timeout;
-    return function (...args: any[]) {
-      if (timerId) {
-        clearTimeout(timerId);
-      }
-      timerId = setTimeout(() => {
-        func(...args);
-      }, delay);
-    };
-  };
-
-  const debouncedSearch = debounce((value: string) => {
-    if (value === "") {
+  const fetchPosts = async (key: string) => {
+    if (!key) {
       setActiveSearch([]);
       return;
     }
 
-    const normalizedSearchValue = removeDiacritics(value.toLowerCase()); // Normalize input
-    const filteredPosts = listPosts
-      .filter((item) => {
-        const normalizedTitle = removeDiacritics(item.title.toLowerCase());
-        return normalizedTitle.includes(normalizedSearchValue);
-      })
-      .slice(0, 5);
-
-    setActiveSearch(filteredPosts);
-  }, 500); // Adjust delay as per your preference
+    const res = await sendRequest<ApiPostResponse>({
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets`,
+      method: "GET",
+      queryParams: {
+        current: 1,
+        pageSize: 5,
+        title: `/${key}/i`,
+      },
+      nextOption: {
+        cache: "no-store",
+      },
+    });
+    if (res && res.data) {
+      setActiveSearch(res.data.result);
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("Search:", e.target.value);
     const { value } = e.target;
     setSearchValue(value);
-    debouncedSearch(value);
+    if (value === "") {
+      setActiveSearch([]);
+      return;
+    }
   };
 
   const handleResultClick = (postId: string) => {
@@ -156,6 +76,7 @@ export default function SearchBar() {
         size="large"
         value={searchValue}
         onChange={handleInputChange}
+        onSearch={() => fetchPosts(searchValue)}
       />
       {activeSearch.length > 0 && (
         <div className="absolute mt-2 p-4 bg-slate-800 text-white w-[28rem] rounded-xl flex flex-col gap-2 z-10">
@@ -165,7 +86,7 @@ export default function SearchBar() {
               onClick={() => handleResultClick(post._id)}
               className="cursor-pointer"
             >
-              {post.title} - {post.userName}
+              {post.title}
             </div>
           ))}
         </div>
