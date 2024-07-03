@@ -113,8 +113,6 @@ const App: React.FC = async () => {
   const review = await getReview();
 
   const tips = await getTips();
-
-  const question = await getQuestion();
   return (
     <div className="p-3 max-w-7xl mx-auto min-h-screen">
       <div className="flex flex-col">
@@ -169,9 +167,6 @@ const App: React.FC = async () => {
                         src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/uploadedFiles/${x.files}`}
                         alt={x.title}
                       />
-                      {/* <p className="text-white text-4xl w-8/12 mx-auto text-center z-999">
-                        {x.title}
-                      </p> */}
                     </Link>
                   ) : (
                     <div className="bg-gradient-to-r from-cyan-500 to-blue-500 h-56 sm:h-64 xl:h-80 2xl:h-96 place-content-center">
@@ -196,14 +191,6 @@ const App: React.FC = async () => {
                     <TimelineContent className="w-11/12">
                       <TimelineTitle className="flex flex-col">
                         <Link href={`/Post/${x._id}`}>{x.title}</Link>
-                        {/* {x.files.length > 0 ? (
-                        <img
-                          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/uploadedFiles/${x.files}`}
-                          alt=""
-                        />
-                      ) : (
-                        <></>
-                      )} */}
                       </TimelineTitle>
                     </TimelineContent>
                   </TimelineItem>
@@ -220,14 +207,6 @@ const App: React.FC = async () => {
                     <TimelineContent className="w-11/12">
                       <TimelineTitle className="flex flex-col">
                         <Link href={`/Post/${x._id}`}>{x.title}</Link>
-                        {/* {x.files.length > 0 ? (
-                        <img
-                          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/uploadedFiles/${x.files}`}
-                          alt=""
-                        />
-                      ) : (
-                        <></>
-                      )} */}
                       </TimelineTitle>
                     </TimelineContent>
                   </TimelineItem>
@@ -244,14 +223,6 @@ const App: React.FC = async () => {
                     <TimelineContent className="w-11/12">
                       <TimelineTitle className="flex flex-col">
                         <Link href={`/Post/${x._id}`}>{x.title}</Link>
-                        {/* {x.files.length > 0 ? (
-                        <img
-                          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/uploadedFiles/${x.files}`}
-                          alt=""
-                        />
-                      ) : (
-                        <></>
-                      )} */}
                       </TimelineTitle>
                     </TimelineContent>
                   </TimelineItem>

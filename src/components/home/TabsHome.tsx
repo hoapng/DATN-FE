@@ -8,7 +8,7 @@ import { sendRequest } from "@/utils/api";
 import PostCard from "../post/PostCard";
 
 const TabsHome = (props: any) => {
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState("News");
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(0);

@@ -117,7 +117,11 @@ const UsersTable = () => {
               placement="leftTop"
               title={"Confirm Delete"}
               description={`${record._id}`}
-              onConfirm={() => handleDeleteUsers(record._id)}
+              onConfirm={() => {
+                if (record.role === "admin")
+                  return message.error("Không thể xóa admin");
+                // handleDeleteUsers(record._id)
+              }}
             >
               <span style={{ cursor: "pointer", margin: "0 20px" }}>
                 <DeleteTwoTone twoToneColor="#ff4d4f" />
