@@ -5,6 +5,7 @@ import { DeleteTwoTone } from "@ant-design/icons";
 import { sendRequest } from "@/utils/api";
 import { useSession } from "next-auth/react";
 import InputPostsSearch from "@/components/dashboard/InputPostsSearch";
+import Link from "next/link";
 
 // https://stackblitz.com/run?file=demo.tsx
 const PostsTable = () => {
@@ -72,7 +73,7 @@ const PostsTable = () => {
       title: "_id",
       dataIndex: "_id",
       render: (text: any, record: any, index: any) => {
-        return <a href={`/Post/${record._id}`}>{record._id}</a>;
+        return <Link href={`/Post/${record._id}`}>{record._id}</Link>;
       },
     },
     {

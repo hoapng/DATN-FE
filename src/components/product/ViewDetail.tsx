@@ -7,6 +7,7 @@ import BookLoader from "./BookLoader";
 import { useSession } from "next-auth/react";
 import { sendRequest } from "@/utils/api";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const ViewDetail = (props: any) => {
   const { dataBook } = props;
@@ -92,7 +93,8 @@ const ViewDetail = (props: any) => {
                   <Col span={24}>
                     <div className="flex items-center gap-6">
                       <div className="createdBy">
-                        Người bán: <a href="#">{dataBook?.createdBy?.name}</a>{" "}
+                        Người bán:{" "}
+                        <Link href="#">{dataBook?.createdBy?.name}</Link>{" "}
                       </div>
                       {dataBook.createdBy._id === session?.user._id ? (
                         <Button

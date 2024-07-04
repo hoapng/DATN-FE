@@ -5,6 +5,7 @@ import { DeleteTwoTone } from "@ant-design/icons";
 import { sendRequest } from "@/utils/api";
 import { useSession } from "next-auth/react";
 import InputProductsSearch from "@/components/dashboard/InputProductsSearch ";
+import Link from "next/link";
 
 // https://stackblitz.com/run?file=demo.tsx
 const ProductsTable = () => {
@@ -72,7 +73,7 @@ const ProductsTable = () => {
       title: "_id",
       dataIndex: "_id",
       render: (text: any, record: any, index: any) => {
-        return <a href={`/Market/Product/${record._id}`}>{record._id}</a>;
+        return <Link href={`/Market/Product/${record._id}`}>{record._id}</Link>;
       },
     },
     {

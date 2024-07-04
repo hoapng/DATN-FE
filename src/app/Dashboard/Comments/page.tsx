@@ -5,6 +5,7 @@ import { DeleteTwoTone } from "@ant-design/icons";
 import { sendRequest } from "@/utils/api";
 import { useSession } from "next-auth/react";
 import InputPostsSearch from "@/components/dashboard/InputPostsSearch";
+import Link from "next/link";
 
 // https://stackblitz.com/run?file=demo.tsx
 const CommentsTable = () => {
@@ -76,7 +77,7 @@ const CommentsTable = () => {
       title: "post",
       dataIndex: "post",
       render: (text: any, record: any, index: any) => {
-        return <a href={`/Post/${record.post}`}>{record.post}</a>;
+        return <Link href={`/Post/${record.post}`}>{record.post}</Link>;
       },
     },
     {

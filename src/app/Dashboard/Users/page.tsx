@@ -5,6 +5,7 @@ import { DeleteTwoTone } from "@ant-design/icons";
 import { sendRequest } from "@/utils/api";
 import { useSession } from "next-auth/react";
 import InputUsersSearch from "@/components/dashboard/InputUsersSearch";
+import Link from "next/link";
 
 // https://stackblitz.com/run?file=demo.tsx
 const UsersTable = () => {
@@ -73,7 +74,7 @@ const UsersTable = () => {
       title: "_id",
       dataIndex: "_id",
       render: (text: any, record: any, index: any) => {
-        return <a href={`/Post/${record._id}`}>{record._id}</a>;
+        return <Link href={`/Profile/${record._id}`}>{record._id}</Link>;
       },
     },
     {
