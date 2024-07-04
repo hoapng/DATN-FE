@@ -106,13 +106,17 @@ const getQuestion = async () => {
 };
 
 const App: React.FC = async () => {
-  const session = await getServerSession(authOptions);
+  const [news, review, tips]: any = await Promise.all([
+    getNews(),
+    getReview(),
+    getTips(),
+  ]);
 
-  const news = await getNews();
+  // const news = await getNews();
 
-  const review = await getReview();
+  // const review = await getReview();
 
-  const tips = await getTips();
+  // const tips = await getTips();
   return (
     <div className="p-3 max-w-7xl mx-auto min-h-screen">
       <div className="flex flex-col">
