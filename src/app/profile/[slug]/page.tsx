@@ -1,9 +1,10 @@
 import authOptions from "@/app/api/authOptions";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import TabsHome from "@/components/home/TabsHome";
 import { sendRequest } from "@/utils/api";
 import { Button } from "flowbite-react";
 import { getServerSession } from "next-auth";
-import React from "react";
+import React, { Suspense } from "react";
 
 const getProfile = async (slug: string) => {
   const res = (await sendRequest({
@@ -161,4 +162,10 @@ const Profile = async ({ params }: any) => {
   );
 };
 
-export default Profile;
+export default function Page({ params }: any) {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <Profile params={params} />
+    </Suspense>
+  );
+}

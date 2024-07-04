@@ -9,6 +9,8 @@ import Link from "next/link";
 import Filter from "bad-words";
 import DeletePost from "./DeletePost";
 import authOptions from "@/app/api/authOptions";
+import { Suspense } from "react";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const getBadWords = async () => {
   const res = (await sendRequest({
@@ -182,4 +184,10 @@ const BlogDetails = async ({ params }: any) => {
   );
 };
 
-export default BlogDetails;
+export default function Page({ params }: any) {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <BlogDetails params={params} />
+    </Suspense>
+  );
+}
