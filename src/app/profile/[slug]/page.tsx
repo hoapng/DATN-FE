@@ -90,11 +90,12 @@ const getPosts = async (slug: string) => {
 
 const Profile = async ({ params }: any) => {
   const { slug } = params;
-  const session = await getServerSession(authOptions);
-  const user = await getProfile(slug);
-  const followers = await getFollowers(slug);
-  const following = await getFollowing(slug);
-  const posts = await getPosts(slug);
+  const [user, posts] = await Promise.all([getProfile(slug), getPosts(slug)]);
+  // const session = await getServerSession(authOptions);
+  // const user = await getProfile(slug);
+  // const followers = await getFollowers(slug);
+  // const following = await getFollowing(slug);
+  // const posts = await getPosts(slug);
   return (
     <div className="p-3 max-w-7xl mx-auto min-h-screen">
       <div className="w-full md:h-60 flex flex-col gap-5 items-center md:flex-row bg-gradient-to-r from-[#020b19] via-[#071b3e] to-[#020b19]  mt-5 mb-10 rounded-md p-5 md:px-20">

@@ -67,13 +67,20 @@ const getSamePosts = async (slug: string) => {
 const BlogDetails = async ({ params }: any) => {
   const { slug } = params;
 
-  const session = await getServerSession(authOptions);
+  const [session, post, samePosts, badWordList] = await Promise.all([
+    getServerSession(authOptions),
+    getData(slug),
+    getSamePosts(slug),
+    getBadWords(),
+  ]);
 
-  const post = await getData(slug);
+  // const session = await getServerSession(authOptions);
 
-  const samePosts = await getSamePosts(slug);
+  // const post = await getData(slug);
 
-  const badWordList = await getBadWords();
+  // const samePosts = await getSamePosts(slug);
+
+  // const badWordList = await getBadWords();
 
   const customFilter = new Filter({
     list: badWordList,
