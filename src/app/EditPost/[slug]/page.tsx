@@ -215,6 +215,7 @@ const EditPost = ({ params }: any) => {
       method: "PATCH",
       body: {
         ...values,
+        title: values.title.trim(),
         // hashtags: values.hashtags
         //   ? values.hashtags
         //       .trim()

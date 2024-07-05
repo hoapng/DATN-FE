@@ -213,12 +213,9 @@ export default function CreatePost() {
       method: "POST",
       body: {
         ...values,
-        // hashtags: values.hashtags
-        //   ? values.hashtags
-        //       .trim()
-        //       .split("#")
-        //       .map((hashtag: any) => hashtag.trim())
-        //   : [],
+        name: values.name.trim(),
+        address: values.address.trim(),
+        description: values.description.trim(),
         files: file,
       },
       headers: {

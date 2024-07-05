@@ -215,12 +215,13 @@ export default function CreatePost() {
       method: "POST",
       body: {
         ...values,
-        hashtags: values.hashtags
-          ? values.hashtags
-              .trim()
-              .split("#")
-              .map((hashtag: any) => hashtag.trim())
-          : [],
+        title: values.title.trim(),
+        // hashtags: values.hashtags
+        //   ? values.hashtags
+        //       .trim()
+        //       .split("#")
+        //       .map((hashtag: any) => hashtag.trim())
+        //   : [],
         files: file,
       },
       headers: {

@@ -135,7 +135,7 @@ const App: React.FC = async () => {
                       />
                     </Link>
                   ) : (
-                    <div className="bg-gradient-to-r from-cyan-500 to-blue-500 h-56 sm:h-64 xl:h-80 2xl:h-96 place-content-center">
+                    <div className="bg-gradient-to-r from-purple-500 to-blue-500 h-56 sm:h-64 xl:h-80 2xl:h-96 place-content-center">
                       <p className="text-white text-4xl w-8/12 mx-auto text-center">
                         {x.title}
                       </p>
@@ -155,7 +155,7 @@ const App: React.FC = async () => {
                       />
                     </Link>
                   ) : (
-                    <div className="bg-gradient-to-r from-cyan-500 to-blue-500 h-56 sm:h-64 xl:h-80 2xl:h-96 place-content-center">
+                    <div className="bg-gradient-to-r from-purple-500 to-blue-500 h-56 sm:h-64 xl:h-80 2xl:h-96 place-content-center">
                       <p className="text-white text-4xl w-8/12 mx-auto text-center">
                         {x.title}
                       </p>
@@ -175,7 +175,7 @@ const App: React.FC = async () => {
                       />
                     </Link>
                   ) : (
-                    <div className="bg-gradient-to-r from-cyan-500 to-blue-500 h-56 sm:h-64 xl:h-80 2xl:h-96 place-content-center">
+                    <div className="bg-gradient-to-r from-purple-500 to-blue-500 h-56 sm:h-64 xl:h-80 2xl:h-96 place-content-center">
                       <p className="text-white text-4xl w-8/12 mx-auto text-center">
                         {x.title}
                       </p>
