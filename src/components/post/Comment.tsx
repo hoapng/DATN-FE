@@ -22,7 +22,7 @@ export default function Comment({ comment, onDelete, getComments }: any) {
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comments/${comment._id}`,
       method: "PATCH",
       body: {
-        content: editedContent,
+        content: editedContent.trim(),
       },
       nextOption: {
         cache: "no-store",

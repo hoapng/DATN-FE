@@ -47,7 +47,7 @@ export default function CommentSection({ postId }: { postId: any }) {
       method: "POST",
       body: {
         post: postId,
-        content: comment,
+        content: comment.trim(),
       },
       nextOption: {
         cache: "no-store",
@@ -89,7 +89,7 @@ export default function CommentSection({ postId }: { postId: any }) {
     getComments();
   }, [postId]);
   return (
-    <div className="max-w-2xl mx-auto w-full p-3">
+    <div className="mx-auto w-full p-3">
       {session ? (
         <div className="flex items-center gap-1 my-5 text-gray-500 text-sm">
           <p>Signed in as:</p>
