@@ -11,20 +11,7 @@ import DeletePost from "./DeletePost";
 import authOptions from "@/app/api/authOptions";
 import { Suspense } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
-
-const getBadWords = async () => {
-  const res = (await sendRequest({
-    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/badwords`,
-    method: "GET",
-    nextOption: {
-      cache: "no-store",
-    },
-  })) as any;
-
-  if (res.data && res.data.result) {
-    return res.data.result.map((x: any) => x.word);
-  }
-};
+import { clean } from "@/utils/filter";
 
 const getData = async (slug: string) => {
   const res = (await sendRequest({
@@ -69,32 +56,18 @@ const getSamePosts = async (slug: string) => {
 const BlogDetails = async ({ params }: any) => {
   const { slug } = params;
 
-  const [session, post, samePosts, badWordList] = await Promise.all([
+  const [session, post, samePosts] = await Promise.all([
     getServerSession(authOptions),
     getData(slug),
     getSamePosts(slug),
-    getBadWords(),
   ]);
-
-  // const session = await getServerSession(authOptions);
-
-  // const post = await getData(slug);
-
-  // const samePosts = await getSamePosts(slug);
-
-  // const badWordList = await getBadWords();
-
-  const customFilter = new Filter({
-    list: badWordList,
-    splitRegex: /(?:(?<= )|(?= )|(?<=<)|(?=<)|(?<=>)|(?=>)|(?<=&)|(?=&))/g,
-  });
 
   return (
     <div className="w-full px-0 md:px-10 py-8 2xl:px-20">
       <div className="w-full flex flex-col md:flex-row gap-2 gap-y-5 items-center">
         <div className="w-full md:w-1/2 flex flex-col gap-8">
           <h1 className="text-3xl md:text-5xl font-bold text-slate-800 dark:text-white">
-            {post?.title}
+            {await clean(post?.title)}
           </h1>
           <span className="text-slate-600">
             {new Date(post?.createdAt).toDateString()}
@@ -154,7 +127,7 @@ const BlogDetails = async ({ params }: any) => {
             <div
               className="content"
               dangerouslySetInnerHTML={{
-                __html: customFilter.clean(post?.content),
+                __html: await clean(post?.content),
                 // __html: badWords(post?.content, {
                 //   replacement: "*",
                 //   blackList: (defaultList) => [...badWordList],
