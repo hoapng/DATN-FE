@@ -14,6 +14,7 @@ import Link from "next/link";
 import authOptions from "./api/authOptions";
 import { Suspense } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { clean } from "@/utils/filter";
 
 const getNews = async () => {
   const res = (await sendRequest({
@@ -34,7 +35,14 @@ const getNews = async () => {
   })) as any;
 
   if (res.data) {
-    return res.data;
+    return await Promise.all(
+      res.data.result.map(async (x: any) => {
+        return {
+          ...x,
+          title: await clean(x.title),
+        };
+      })
+    );
   }
 };
 
@@ -57,7 +65,14 @@ const getReview = async () => {
   })) as any;
 
   if (res.data) {
-    return res.data;
+    return await Promise.all(
+      res.data.result.map(async (x: any) => {
+        return {
+          ...x,
+          title: await clean(x.title),
+        };
+      })
+    );
   }
 };
 
@@ -80,32 +95,46 @@ const getTips = async () => {
   })) as any;
 
   if (res.data) {
-    return res.data;
+    return await Promise.all(
+      res.data.result.map(async (x: any) => {
+        return {
+          ...x,
+          title: await clean(x.title),
+        };
+      })
+    );
   }
 };
 
-const getQuestion = async () => {
-  const res = (await sendRequest({
-    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/`,
-    method: "GET",
-    queryParams: {
-      current: 1,
-      pageSize: 3,
-      type: "Question",
-      sort: "-updatedAt",
-    },
-    nextOption: {
-      cache: "no-store",
-    },
-    // headers: {
-    //   Authorization: `Bearer ${session?.access_token}`,
-    // },
-  })) as any;
+// const getQuestion = async () => {
+//   const res = (await sendRequest({
+//     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/`,
+//     method: "GET",
+//     queryParams: {
+//       current: 1,
+//       pageSize: 3,
+//       type: "Question",
+//       sort: "-updatedAt",
+//     },
+//     nextOption: {
+//       cache: "no-store",
+//     },
+//     // headers: {
+//     //   Authorization: `Bearer ${session?.access_token}`,
+//     // },
+//   })) as any;
 
-  if (res.data) {
-    return res.data;
-  }
-};
+//   if (res.data) {
+//     return await Promise.all(
+//       res.data.result.map(async (x: any) => {
+//         return {
+//           ...x,
+//           title: await clean(x.title),
+//         };
+//       })
+//     );
+//   }
+// };
 
 const App: React.FC = async () => {
   const [news, review, tips]: any = await Promise.all([
@@ -114,17 +143,12 @@ const App: React.FC = async () => {
     getTips(),
   ]);
 
-  // const news = await getNews();
-
-  // const review = await getReview();
-
-  // const tips = await getTips();
   return (
     <div className="p-3 max-w-7xl mx-auto min-h-screen">
       <div className="flex flex-col">
         <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
           <Carousel className="w-full">
-            {news.result.map((x: any, index: number) => {
+            {news.map((x: any, index: number) => {
               return (
                 <div key={index}>
                   {x.files.length > 0 ? (
@@ -144,7 +168,7 @@ const App: React.FC = async () => {
                 </div>
               );
             })}
-            {review.result.map((x: any, index: number) => {
+            {review.map((x: any, index: number) => {
               return (
                 <div key={index}>
                   {x.files.length > 0 ? (
@@ -164,7 +188,7 @@ const App: React.FC = async () => {
                 </div>
               );
             })}
-            {tips.result.map((x: any, index: number) => {
+            {tips.map((x: any, index: number) => {
               return (
                 <div key={index}>
                   {x.files.length > 0 ? (
@@ -190,7 +214,7 @@ const App: React.FC = async () => {
         <div className="flex w-full">
           <div className="w-4/12">
             <Timeline>
-              {news.result.map((x: any, index: number) => {
+              {news.map((x: any, index: number) => {
                 return (
                   <TimelineItem key={index}>
                     <TimelinePoint />
@@ -206,7 +230,7 @@ const App: React.FC = async () => {
           </div>
           <div className="w-4/12">
             <Timeline>
-              {review.result.map((x: any, index: number) => {
+              {review.map((x: any, index: number) => {
                 return (
                   <TimelineItem key={index}>
                     <TimelinePoint />
@@ -222,7 +246,7 @@ const App: React.FC = async () => {
           </div>
           <div className="w-4/12">
             <Timeline>
-              {tips.result.map((x: any, index: number) => {
+              {tips.map((x: any, index: number) => {
                 return (
                   <TimelineItem key={index}>
                     <TimelinePoint />

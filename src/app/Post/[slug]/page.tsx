@@ -1,12 +1,10 @@
-import ImagePost from "@/components/post/ImagePost";
 import CommentSection from "@/components/post/PostComments";
 import ReactPost from "@/components/post/ReactPost";
 import SamePost from "@/components/post/SamePost";
 import { sendRequest } from "@/utils/api";
-import { Badge, Button } from "flowbite-react";
+import { Button } from "flowbite-react";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
-import Filter from "bad-words";
 import DeletePost from "./DeletePost";
 import authOptions from "@/app/api/authOptions";
 import { Suspense } from "react";
@@ -49,7 +47,14 @@ const getSamePosts = async (slug: string) => {
   })) as any;
 
   if (res.data) {
-    return res.data;
+    return await Promise.all(
+      res.data.result.map(async (x: any) => {
+        return {
+          ...x,
+          title: await clean(x.title),
+        };
+      })
+    );
   }
 };
 
@@ -148,7 +153,7 @@ const BlogDetails = async ({ params }: any) => {
           <p className="text-xl font-bold -mb-3 text-gray-600 dark:text-slate-500">
             Bài viết liên quan
           </p>
-          {samePosts?.result?.map((post: string, id: number) => {
+          {samePosts?.map((post: any, id: number) => {
             return <SamePost post={post} key={id} />;
           })}
         </div>

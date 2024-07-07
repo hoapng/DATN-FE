@@ -129,7 +129,7 @@ const BadwordsTable = () => {
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/badwords`,
       method: "POST",
       body: {
-        word: word,
+        word: word.trim(),
       },
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
