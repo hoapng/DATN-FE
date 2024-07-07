@@ -1,15 +1,10 @@
-import CommentSection from "@/components/post/PostComments";
-import ReactPost from "@/components/post/ReactPost";
-import SamePost from "@/components/post/SamePost";
 import { sendRequest } from "@/utils/api";
-import { Button } from "flowbite-react";
-import { getServerSession } from "next-auth";
-import Link from "next/link";
-import DeletePost from "./DeletePost";
-import authOptions from "@/app/api/authOptions";
 import { Suspense } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { clean, cleanCustom } from "@/utils/filter";
+import BlogDetails from "@/components/post/BlogDetails";
+import { getServerSession } from "next-auth";
+import authOptions from "@/app/api/authOptions";
 
 const getData = async (slug: string) => {
   const res = (await sendRequest({
@@ -26,7 +21,16 @@ const getData = async (slug: string) => {
     // },
   })) as any;
   if (res.data) {
-    return res.data;
+    const [title, content] = await Promise.all([
+      await clean(res.data.title),
+      await clean(res.data.content),
+    ]);
+
+    return {
+      ...res.data,
+      title: title,
+      content: content,
+    };
   }
 };
 
@@ -58,7 +62,7 @@ const getSamePosts = async (slug: string) => {
   }
 };
 
-const BlogDetails = async ({ params }: any) => {
+export default async function Page({ params }: any) {
   const { slug } = params;
 
   const [session, post, samePosts] = await Promise.all([
@@ -68,104 +72,13 @@ const BlogDetails = async ({ params }: any) => {
   ]);
 
   return (
-    <div className="w-full px-0 md:px-10 py-8 2xl:px-20">
-      <div className="w-full flex flex-col md:flex-row gap-2 gap-y-5 items-center">
-        <div className="w-full md:w-1/2 flex flex-col gap-8">
-          <h1 className="text-3xl md:text-5xl font-bold text-slate-800 dark:text-white">
-            {await clean(post?.title)}
-          </h1>
-          <span className="text-slate-600">
-            {new Date(post?.createdAt).toDateString()}
-          </span>
-
-          <div className="w-full flex flex-wrap gap-2 items-center ">
-            {/* {post?.hashtags?.map((hashtag: string, index: number) => (
-              <Badge key={index} color="indigo" size="sm">
-                {hashtag}
-              </Badge>
-            ))} */}
-            <ReactPost post={post} />
-          </div>
-          <Link
-            href={`/Profile/${post?.createdBy?._id}`}
-            className="flex gap-3"
-          >
-            <img
-              src={post?.createdBy?.avatar}
-              alt={post?.createdBy?.name}
-              className="object-cover w-12 h-12  rounded-full"
-            />
-            <div className="">
-              <p className="text-slate-800 dark:text-white font-medium">
-                {post?.createdBy?.name}
-              </p>
-              <span className="text-slate-600">{post?.createdBy?.email}</span>
-            </div>
-          </Link>
-          {session?.user._id === post?.createdBy?._id ? (
-            <div className="flex flex-wrap gap-2">
-              <Link href={`/EditPost/${slug}`}>
-                <Button color="gray">Chỉnh sửa</Button>
-              </Link>
-              <DeletePost postId={post._id} />
-            </div>
-          ) : (
-            <></>
-          )}
-        </div>
-        {post?.files?.length > 0 ? (
-          <img
-            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/uploadedFiles/${post.files}`}
-            alt=""
-            className="w-full md:w-1/2 h-auto md:h-[360px] 2xl:h-[460px] rounded object-contain"
-          />
-        ) : (
-          <></>
-        )}
-      </div>
-
-      <div className="w-full flex flex-col md:flex-row gap-x-10 2xl:gap-x-28 mt-10">
-        {/* LEFT */}
-        <div className="w-full md:w-2/3 flex flex-col text-black dark:text-gray-500 ">
-          {/* {post?.content} */}
-          {post.content ? (
-            <div
-              className="content"
-              dangerouslySetInnerHTML={{
-                __html: await cleanCustom(post?.content),
-                // __html: badWords(post?.content, {
-                //   replacement: "*",
-                //   blackList: (defaultList) => [...badWordList],
-                // }),
-              }}
-            />
-          ) : (
-            <></>
-          )}
-
-          {/* COMMENTS SECTION */}
-          <div className="w-full">{<CommentSection postId={slug} />}</div>
-        </div>
-
-        {/* RIGHT */}
-        <div className="w-full md:w-1/4 flex flex-col gap-y-12">
-          {/* SAME POSTS */}
-          <p className="text-xl font-bold -mb-3 text-gray-600 dark:text-slate-500">
-            Bài viết liên quan
-          </p>
-          {samePosts?.map((post: any, id: number) => {
-            return <SamePost post={post} key={id} />;
-          })}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default function Page({ params }: any) {
-  return (
     <Suspense fallback={<LoadingSpinner />}>
-      <BlogDetails params={params} />
+      <BlogDetails
+        session={session}
+        post={post}
+        samePosts={samePosts}
+        slug={slug}
+      />
     </Suspense>
   );
 }
