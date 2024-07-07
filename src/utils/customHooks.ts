@@ -26,3 +26,19 @@ export const useFilter = () => {
   });
   return customFilter;
 };
+
+export const useFilterCustom = () => {
+  const [list, setList] = useState([]);
+  const fetchList = async () => {
+    const temp = await getBadWords();
+    setList(temp);
+  };
+  useEffect(() => {
+    fetchList();
+  }, []);
+  const customFilter = new Filter({
+    list: list,
+    splitRegex: /(?:(?<= )|(?= )|(?<=<)|(?=<)|(?<=>)|(?=>)|(?<=&)|(?=&))/g,
+  });
+  return customFilter;
+};

@@ -9,7 +9,7 @@ import DeletePost from "./DeletePost";
 import authOptions from "@/app/api/authOptions";
 import { Suspense } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import { clean } from "@/utils/filter";
+import { clean, cleanCustom } from "@/utils/filter";
 
 const getData = async (slug: string) => {
   const res = (await sendRequest({
@@ -46,9 +46,9 @@ const getSamePosts = async (slug: string) => {
     // },
   })) as any;
 
-  if (res.data) {
+  if (res.data.result) {
     return await Promise.all(
-      res.data.result.map(async (x: any) => {
+      res.data.result?.map(async (x: any) => {
         return {
           ...x,
           title: await clean(x.title),
@@ -132,7 +132,7 @@ const BlogDetails = async ({ params }: any) => {
             <div
               className="content"
               dangerouslySetInnerHTML={{
-                __html: await clean(post?.content),
+                __html: await cleanCustom(post?.content),
                 // __html: badWords(post?.content, {
                 //   replacement: "*",
                 //   blackList: (defaultList) => [...badWordList],

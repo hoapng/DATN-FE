@@ -18,6 +18,13 @@ export const getBadWords = async () => {
 export const clean = async (value: string) => {
   const customFilter = new Filter({
     list: await getBadWords(),
+  });
+  return customFilter.clean(value);
+};
+
+export const cleanCustom = async (value: string) => {
+  const customFilter = new Filter({
+    list: await getBadWords(),
     splitRegex: /(?:(?<= )|(?= )|(?<=<)|(?=<)|(?<=>)|(?=>)|(?<=&)|(?=&))/g,
   });
   return customFilter.clean(value);

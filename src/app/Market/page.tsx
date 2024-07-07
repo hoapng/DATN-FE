@@ -18,6 +18,7 @@ import "./home.scss";
 import { sendRequest } from "@/utils/api";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { clean } from "@/utils/filter";
 const Home = () => {
   const router = useRouter();
   const { data: session } = useSession();
@@ -29,7 +30,7 @@ const Home = () => {
     { label: "Ổn", value: "Fine" },
   ];
 
-  const [listProduct, setListProduct] = useState([]);
+  const [listProduct, setListProduct] = useState<any>([]);
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(0);
@@ -86,8 +87,16 @@ const Home = () => {
       //   Authorization: `Bearer ${session?.access_token}`,
       // },
     })) as any;
-    if (res && res.data) {
-      setListProduct(res.data.result);
+    if (res && res.data && res.data.result) {
+      const result = await Promise.all(
+        res.data.result?.map(async (x: any) => {
+          return {
+            ...x,
+            name: await clean(x.name),
+          };
+        })
+      );
+      setListProduct(result);
       setTotal(res.data.meta.total);
     }
     setIsLoading(false);

@@ -34,9 +34,9 @@ const getNews = async () => {
     // },
   })) as any;
 
-  if (res.data) {
+  if (res.data.result) {
     return await Promise.all(
-      res.data.result.map(async (x: any) => {
+      res.data.result?.map(async (x: any) => {
         return {
           ...x,
           title: await clean(x.title),
@@ -64,9 +64,9 @@ const getReview = async () => {
     // },
   })) as any;
 
-  if (res.data) {
+  if (res.data.result) {
     return await Promise.all(
-      res.data.result.map(async (x: any) => {
+      res.data.result?.map(async (x: any) => {
         return {
           ...x,
           title: await clean(x.title),
@@ -94,9 +94,9 @@ const getTips = async () => {
     // },
   })) as any;
 
-  if (res.data) {
+  if (res.data.result) {
     return await Promise.all(
-      res.data.result.map(async (x: any) => {
+      res.data.result?.map(async (x: any) => {
         return {
           ...x,
           title: await clean(x.title),
@@ -124,9 +124,9 @@ const getTips = async () => {
 //     // },
 //   })) as any;
 
-//   if (res.data) {
+//   if (res.data.result) {
 //     return await Promise.all(
-//       res.data.result.map(async (x: any) => {
+//       res.data.result?.map(async (x: any) => {
 //         return {
 //           ...x,
 //           title: await clean(x.title),

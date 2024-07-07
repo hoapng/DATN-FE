@@ -138,10 +138,6 @@ const ViewDetail = (props: any) => {
                         className="description"
                         dangerouslySetInnerHTML={{
                           __html: dataBook?.description,
-                          // __html: badWords(post?.content, {
-                          //   replacement: "*",
-                          //   blackList: (defaultList) => [...badWordList],
-                          // }),
                         }}
                       />
                     ) : (

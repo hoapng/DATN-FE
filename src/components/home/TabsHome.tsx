@@ -6,13 +6,14 @@ import ListHome from "./ListHome";
 import Link from "next/link";
 import { sendRequest } from "@/utils/api";
 import PostCard from "../post/PostCard";
+import { clean } from "@/utils/filter";
 
 const TabsHome = (props: any) => {
   const [filter, setFilter] = useState("News");
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(0);
-  const [listPost, setListPost] = useState([]);
+  const [listPost, setListPost] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -47,7 +48,15 @@ const TabsHome = (props: any) => {
       // },
     })) as any;
     if (res && res.data) {
-      setListPost(res.data.result);
+      const result = await Promise.all(
+        res.data.result?.map(async (x: any) => {
+          return {
+            ...x,
+            title: await clean(x.title),
+          };
+        })
+      );
+      setListPost(result);
       setTotal(res.data.meta.total);
     }
     setIsLoading(false);

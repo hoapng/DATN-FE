@@ -1,10 +1,8 @@
 "use client";
-import { useFilter } from "@/utils/customHooks";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import Link from "next/link";
 
 export default function PostCard({ post }: any) {
-  const customFilter = useFilter();
   return (
     <div
       key={post?._id}
@@ -20,7 +18,7 @@ export default function PostCard({ post }: any) {
           >
             <img
               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/uploadedFiles/${post.files}`}
-              alt={customFilter.clean(post?.title)}
+              alt={post?.title}
               className="object-cover w-full h-full rounded"
             />
           </Link>
@@ -32,7 +30,7 @@ export default function PostCard({ post }: any) {
             </div>
 
             <h6 className="text-xl 2xl:text-3xl font-semibold text-black dark:text-white">
-              {customFilter.clean(post?.title)}
+              {post?.title}
             </h6>
             <Link
               href={`/Post/${post._id}`}
@@ -51,7 +49,7 @@ export default function PostCard({ post }: any) {
           >
             <div className="bg-gradient-to-r from-purple-500 to-blue-500 place-content-center object-cover w-full h-full rounded">
               <p className="text-white text-2xl w-8/12 mx-auto text-center">
-                {customFilter.clean(post?.title)}
+                {post?.title}
               </p>
             </div>
           </Link>
@@ -63,7 +61,7 @@ export default function PostCard({ post }: any) {
             </div>
 
             <h6 className="text-xl 2xl:text-3xl font-semibold text-black dark:text-white">
-              {customFilter.clean(post?.title)}
+              {post?.title}
             </h6>
             <Link
               href={`/Post/${post._id}`}
