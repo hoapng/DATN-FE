@@ -228,7 +228,7 @@ const App: React.FC = async () => {
               })}
             </Timeline>
           </div>
-          {/* <div className="w-4/12">
+          <div className="w-4/12">
             <Timeline>
               {review.map((x: any, index: number) => {
                 return (
@@ -243,7 +243,23 @@ const App: React.FC = async () => {
                 );
               })}
             </Timeline>
-          </div> */}
+          </div>
+          <div className="w-4/12">
+            <Timeline>
+              {review.map((x: any, index: number) => {
+                return (
+                  <TimelineItem key={index}>
+                    <TimelinePoint />
+                    <TimelineContent className="w-11/12">
+                      <TimelineTitle className="flex flex-col">
+                        <Link href={`/Post/${x._id}`}>{x.title}</Link>
+                      </TimelineTitle>
+                    </TimelineContent>
+                  </TimelineItem>
+                );
+              })}
+            </Timeline>
+          </div>
           <div className="w-4/12">
             <Timeline>
               {tips.map((x: any, index: number) => {
