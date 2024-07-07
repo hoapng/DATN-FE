@@ -228,7 +228,7 @@ const App: React.FC = async () => {
               })}
             </Timeline>
           </div>
-          <div className="w-4/12">
+          {/* <div className="w-4/12">
             <Timeline>
               {review.map((x: any, index: number) => {
                 return (
@@ -243,7 +243,7 @@ const App: React.FC = async () => {
                 );
               })}
             </Timeline>
-          </div>
+          </div> */}
           <div className="w-4/12">
             <Timeline>
               {tips.map((x: any, index: number) => {
