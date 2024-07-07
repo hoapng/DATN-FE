@@ -1,6 +1,8 @@
+import BookLoader from "@/components/product/BookLoader";
 import ViewDetail from "@/components/product/ViewDetail";
 import { sendRequest } from "@/utils/api";
 import { clean, cleanCustom } from "@/utils/filter";
+import { Suspense } from "react";
 
 const fetchBook = async (slug: any) => {
   const res = (await sendRequest({
@@ -57,9 +59,7 @@ const getImages = (raw: any) => {
   return images;
 };
 
-const BookPage = async ({ params }: any) => {
-  const { slug } = params; // slug
-
+const BookPage = async ({ slug }: any) => {
   const dataBook = await fetchBook(slug);
 
   return (
@@ -69,4 +69,31 @@ const BookPage = async ({ params }: any) => {
   );
 };
 
-export default BookPage;
+export default function Page({ params }: any) {
+  const { slug } = params; // slug
+
+  return (
+    <Suspense
+      fallback={
+        <div style={{ background: "#efefef", padding: "20px 0" }}>
+          <div
+            className="view-detail-book"
+            style={{
+              maxWidth: 1440,
+              margin: "0 auto",
+              minHeight: "calc(100vh - 150px)",
+            }}
+          >
+            <div
+              style={{ padding: "20px", background: "#fff", borderRadius: 5 }}
+            >
+              <BookLoader />
+            </div>
+          </div>
+        </div>
+      }
+    >
+      <BookPage slug={slug} />
+    </Suspense>
+  );
+}

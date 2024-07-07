@@ -3,7 +3,6 @@ import { Row, Col, Rate, Divider, Button, message } from "antd";
 import "./book.scss";
 import ImageGallery from "react-image-gallery";
 import { useRef, useState } from "react";
-import BookLoader from "./BookLoader";
 import { useSession } from "next-auth/react";
 import { sendRequest } from "@/utils/api";
 import { useRouter } from "next/navigation";
@@ -63,93 +62,84 @@ const ViewDetail = (props: any) => {
         }}
       >
         <div style={{ padding: "20px", background: "#fff", borderRadius: 5 }}>
-          {dataBook && dataBook._id ? (
-            <>
-              <Row gutter={[20, 20]}>
-                <Col md={10} sm={0} xs={0}>
-                  <ImageGallery
-                    ref={refGallery}
-                    items={images}
-                    showPlayButton={false} //hide play button
-                    showFullscreenButton={false} //hide fullscreen button
-                    renderLeftNav={() => <></>} //left arrow === <> </>
-                    renderRightNav={() => <></>} //right arrow === <> </>
-                    slideOnThumbnailOver={true} //onHover => auto scroll images
-                    onClick={() => handleOnClickImage()}
-                  />
-                </Col>
-                <Col md={14} sm={24}>
-                  <Col md={0} sm={24} xs={24}>
-                    <ImageGallery
-                      ref={refGallery}
-                      items={images}
-                      showPlayButton={false} //hide play button
-                      showFullscreenButton={false} //hide fullscreen button
-                      renderLeftNav={() => <></>} //left arrow === <> </>
-                      renderRightNav={() => <></>} //right arrow === <> </>
-                      showThumbnails={false}
-                    />
-                  </Col>
-                  <Col span={24}>
-                    <div className="flex items-center gap-6">
-                      <div className="createdBy">
-                        Người bán:{" "}
-                        <Link href="#">{dataBook?.createdBy?.name}</Link>{" "}
-                      </div>
-                      {dataBook.createdBy._id === session?.user._id ? (
-                        <Button
-                          onClick={() => handleDeleteProduct(dataBook._id)}
-                        >
-                          Xóa sản phẩm
-                        </Button>
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                    <h1 className="name text-3xl md:text-5xl text-slate-800">
-                      {dataBook?.name}
-                    </h1>
-                    <br />
-                    <div className="price">
-                      <span className="currency">
-                        {new Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        }).format(dataBook?.price ?? 0)}
-                      </span>
-                    </div>
-                    <div className="delivery">
-                      <div>
-                        <span className="left-side">Địa chỉ: </span>
-                        <span className="right-side">{dataBook?.address}</span>
-                      </div>
-                    </div>
-                  </Col>
-                </Col>
-              </Row>
-              <Divider />
-              <Row>
-                <div className="w-1/2">
+          <Row gutter={[20, 20]}>
+            <Col md={10} sm={0} xs={0}>
+              <ImageGallery
+                ref={refGallery}
+                items={images}
+                showPlayButton={false} //hide play button
+                showFullscreenButton={false} //hide fullscreen button
+                renderLeftNav={() => <></>} //left arrow === <> </>
+                renderRightNav={() => <></>} //right arrow === <> </>
+                slideOnThumbnailOver={true} //onHover => auto scroll images
+                onClick={() => handleOnClickImage()}
+              />
+            </Col>
+            <Col md={14} sm={24}>
+              <Col md={0} sm={24} xs={24}>
+                <ImageGallery
+                  ref={refGallery}
+                  items={images}
+                  showPlayButton={false} //hide play button
+                  showFullscreenButton={false} //hide fullscreen button
+                  renderLeftNav={() => <></>} //left arrow === <> </>
+                  renderRightNav={() => <></>} //right arrow === <> </>
+                  showThumbnails={false}
+                />
+              </Col>
+              <Col span={24}>
+                <div className="flex items-center gap-6">
+                  <div className="createdBy">
+                    Người bán: <Link href="#">{dataBook?.createdBy?.name}</Link>{" "}
+                  </div>
+                  {dataBook.createdBy._id === session?.user._id ? (
+                    <Button onClick={() => handleDeleteProduct(dataBook._id)}>
+                      Xóa sản phẩm
+                    </Button>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+                <h1 className="name text-3xl md:text-5xl text-slate-800">
+                  {dataBook?.name}
+                </h1>
+                <br />
+                <div className="price">
+                  <span className="currency">
+                    {new Intl.NumberFormat("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(dataBook?.price ?? 0)}
+                  </span>
+                </div>
+                <div className="delivery">
                   <div>
-                    <h2 className="text-3xl text-slate-800">Mô tả: </h2>
-                    <br />
-                    {dataBook?.description ? (
-                      <span
-                        className="description"
-                        dangerouslySetInnerHTML={{
-                          __html: dataBook?.description,
-                        }}
-                      />
-                    ) : (
-                      <></>
-                    )}
+                    <span className="left-side">Địa chỉ: </span>
+                    <span className="right-side">{dataBook?.address}</span>
                   </div>
                 </div>
-              </Row>
-            </>
-          ) : (
-            <BookLoader />
-          )}
+              </Col>
+            </Col>
+          </Row>
+          <Divider />
+          <Row>
+            <div className="w-1/2">
+              <div>
+                <h2 className="text-3xl text-slate-800">Mô tả: </h2>
+                <br />
+                {dataBook?.description ? (
+                  <span
+                    className="description"
+                    dangerouslySetInnerHTML={{
+                      __html: dataBook?.description,
+                    }}
+                  />
+                ) : (
+                  <></>
+                )}
+              </div>
+            </div>
+          </Row>
         </div>
       </div>
     </div>

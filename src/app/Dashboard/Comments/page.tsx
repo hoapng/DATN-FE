@@ -4,7 +4,6 @@ import { Table, Row, Col, Button, Popconfirm, message } from "antd";
 import { DeleteTwoTone } from "@ant-design/icons";
 import { sendRequest } from "@/utils/api";
 import { useSession } from "next-auth/react";
-import InputPostsSearch from "@/components/dashboard/InputPostsSearch";
 import Link from "next/link";
 
 // https://stackblitz.com/run?file=demo.tsx

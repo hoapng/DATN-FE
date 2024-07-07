@@ -4,6 +4,7 @@ import { sendRequest } from "@/utils/api";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Input } from "antd";
+import { clean } from "@/utils/filter";
 
 interface Post {
   userName: string;
@@ -48,8 +49,16 @@ export default function SearchBar() {
         cache: "no-store",
       },
     });
-    if (res && res.data) {
-      setActiveSearch(res.data.result);
+    if (res && res.data && res.data.result) {
+      const result = await Promise.all(
+        res.data.result?.map(async (x: any) => {
+          return {
+            ...x,
+            title: await clean(x.title),
+          };
+        })
+      );
+      setActiveSearch(result);
     }
   };
 

@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { sendRequest } from "@/utils/api";
 import { message } from "antd";
+import { clean } from "@/utils/filter";
 
 export default function CommentSection({ postId }: { postId: any }) {
   const { data: session } = useSession();
@@ -32,8 +33,16 @@ export default function CommentSection({ postId }: { postId: any }) {
       //   Authorization: `Bearer ${session?.access_token}`,
       // },
     })) as any;
-    if (res.data) {
-      setComments(res.data);
+    if (res.data && res.data.result) {
+      const result = await Promise.all(
+        res.data.result?.map(async (x: any) => {
+          return {
+            ...x,
+            content: await clean(x.content),
+          };
+        })
+      );
+      setComments({ ...res.data, result: result });
     } else message.info(res.message);
   };
 

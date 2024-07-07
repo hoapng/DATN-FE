@@ -8,7 +8,7 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, DatePicker, Form, Input, Select, Upload } from "antd";
 import { sendRequest, sendRequestFile } from "@/utils/api";
 import type { FormProps, GetProp, UploadProps } from "antd";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import * as nsfwjs from "nsfwjs";
 import { useRouter } from "next/navigation";
 
