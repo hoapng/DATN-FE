@@ -7,11 +7,13 @@ import { useSession } from "next-auth/react";
 import { sendRequest } from "@/utils/api";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Modal } from "flowbite-react";
 
 const ViewDetail = (props: any) => {
   const { dataBook } = props;
   const { data: session } = useSession();
   const router = useRouter();
+  const [showModal, setShowModal] = useState(false);
 
   const [isOpenModalGallery, setIsOpenModalGallery] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -93,7 +95,7 @@ const ViewDetail = (props: any) => {
                     Người bán: <Link href="#">{dataBook?.createdBy?.name}</Link>{" "}
                   </div>
                   {dataBook.createdBy._id === session?.user._id ? (
-                    <Button onClick={() => handleDeleteProduct(dataBook._id)}>
+                    <Button onClick={() => setShowModal(true)}>
                       Xóa sản phẩm
                     </Button>
                   ) : (
@@ -142,6 +144,33 @@ const ViewDetail = (props: any) => {
           </Row>
         </div>
       </div>
+      <Modal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        popup
+        size="md"
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            {/* <ExclamationCircleOutlined className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto' /> */}
+            <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">
+              Are you sure you want to delete this post?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button
+                color="failure"
+                onClick={() => handleDeleteProduct(dataBook._id)}
+              >
+                Yes, I&apos;m sure
+              </Button>
+              <Button color="gray" onClick={() => setShowModal(false)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { sendRequest } from "@/utils/api";
-import { message } from "antd";
+import { message, Pagination } from "antd";
 import { clean } from "@/utils/filter";
 
 export default function CommentSection({ postId }: { postId: any }) {
@@ -17,11 +17,26 @@ export default function CommentSection({ postId }: { postId: any }) {
   const [showModal, setShowModal] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState("");
 
+  const [current, setCurrent] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  const handleOnchangePage = (pagination: any) => {
+    if (pagination && pagination.current !== current) {
+      setCurrent(pagination.current);
+    }
+    if (pagination && pagination.pageSize !== pageSize) {
+      setPageSize(pagination.pageSize);
+      setCurrent(1);
+    }
+  };
+
   const getComments = async () => {
     const res = (await sendRequest({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comments/`,
       method: "GET",
       queryParams: {
+        current: current,
+        pageSize: pageSize,
         post: postId,
         populate: "createdBy",
         sort: "-updatedAt",
@@ -96,7 +111,7 @@ export default function CommentSection({ postId }: { postId: any }) {
 
   useEffect(() => {
     getComments();
-  }, [postId]);
+  }, [postId, current, pageSize]);
   return (
     <div className="mx-auto w-full p-3">
       {session ? (
@@ -172,6 +187,16 @@ export default function CommentSection({ postId }: { postId: any }) {
               }}
             />
           ))}
+          <br />
+          <Pagination
+            current={current}
+            showSizeChanger
+            showQuickJumper
+            total={comments?.meta?.total}
+            pageSize={pageSize}
+            responsive
+            onChange={(p, s) => handleOnchangePage({ current: p, pageSize: s })}
+          />
         </>
       )}
       <Modal
