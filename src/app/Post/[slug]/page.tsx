@@ -26,16 +26,25 @@ const getData = async (slug: string) => {
     // },
   })) as any;
   if (res.data) {
-    const [title, content] = await Promise.all([
-      await clean(res.data.title),
-      await cleanCustom(res.data.content),
-    ]);
+    if (res.data.content) {
+      const [title, content] = await Promise.all([
+        await clean(res.data.title),
+        await cleanCustom(res.data.content),
+      ]);
 
-    return {
-      ...res.data,
-      title: title,
-      content: content,
-    };
+      return {
+        ...res.data,
+        title: title,
+        content: content,
+      };
+    } else {
+      const title = await clean(res.data.title);
+
+      return {
+        ...res.data,
+        title: title,
+      };
+    }
   }
 };
 
