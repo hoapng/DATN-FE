@@ -7,10 +7,8 @@ import { Input } from "antd";
 import { clean } from "@/utils/filter";
 
 interface Post {
-  userName: string;
   _id: string;
   title: string;
-  createdBy: string;
 }
 
 interface ApiPostResponse {
@@ -49,7 +47,7 @@ export default function SearchBar() {
         cache: "no-store",
       },
     });
-    if (res && res.data && res.data.result) {
+    if (res && res.data && res.data.result.length > 0) {
       const result = await Promise.all(
         res.data.result?.map(async (x: any) => {
           return {
@@ -59,7 +57,7 @@ export default function SearchBar() {
         })
       );
       setActiveSearch(result);
-    }
+    } else setActiveSearch([{ _id: "0", title: "Không có dữ liệu" }]);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,6 +71,7 @@ export default function SearchBar() {
   };
 
   const handleResultClick = (postId: string) => {
+    if (postId === "0") return;
     setSearchValue("");
     router.push(`/Post/${postId}`);
     setActiveSearch([]);
