@@ -50,7 +50,7 @@ const CommentsTable = () => {
 
   const handleDeleteComments = async (_id: any) => {
     const res = (await sendRequest({
-      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tweets/${_id}`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comments/${_id}`,
       method: "DELETE",
       nextOption: {
         cache: "no-store",

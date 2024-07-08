@@ -121,7 +121,7 @@ const UsersTable = () => {
               onConfirm={() => {
                 if (record.role === "admin")
                   return message.error("Không thể xóa admin");
-                // handleDeleteUsers(record._id)
+                handleDeleteUsers(record._id);
               }}
             >
               <span style={{ cursor: "pointer", margin: "0 20px" }}>
