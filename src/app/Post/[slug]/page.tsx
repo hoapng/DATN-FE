@@ -62,9 +62,7 @@ const getSamePosts = async (slug: string) => {
   }
 };
 
-export default async function Page({ params }: any) {
-  const { slug } = params;
-
+export async function AsyncPage({ slug }: any) {
   const [session, post, samePosts] = await Promise.all([
     getServerSession(authOptions),
     getData(slug),
@@ -79,6 +77,15 @@ export default async function Page({ params }: any) {
         samePosts={samePosts}
         slug={slug}
       />
+    </Suspense>
+  );
+}
+
+export default function Page({ params }: any) {
+  const { slug } = params;
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <AsyncPage slug={slug} />
     </Suspense>
   );
 }
