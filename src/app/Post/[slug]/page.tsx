@@ -62,7 +62,7 @@ const getSamePosts = async (slug: string) => {
   }
 };
 
-export async function AsyncPage({ slug }: any) {
+async function AsyncPage({ slug }: any) {
   const [session, post, samePosts] = await Promise.all([
     getServerSession(authOptions),
     getData(slug),
