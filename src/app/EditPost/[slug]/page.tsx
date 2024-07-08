@@ -216,12 +216,12 @@ const EditPost = ({ params }: any) => {
       body: {
         ...values,
         title: values.title.trim(),
-        // hashtags: values.hashtags
-        //   ? values.hashtags
-        //       .trim()
-        //       .split("#")
-        //       .map((hashtag: any) => hashtag.trim())
-        //   : [],
+        hashtags: values.hashtags
+          ? values.hashtags
+              .trim()
+              .split("#")
+              .map((hashtag: any) => hashtag.trim())
+          : [],
         files: file.length === 0 ? [] : file.map((item: any) => item.name),
       },
       headers: {
