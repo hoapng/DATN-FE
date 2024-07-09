@@ -190,6 +190,7 @@ const Home = () => {
                   onClick={() => {
                     form.resetFields();
                     setFilter("");
+                    setCreatedBy("");
                   }}
                 />
               </div>
