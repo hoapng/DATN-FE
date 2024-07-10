@@ -312,11 +312,10 @@ const Home = () => {
                         }
                       >
                         <div className="wrapper h-full w-full relative">
-                          <div className="thumbnail h-full w-full overflow-hidden">
+                          <div className="thumbnail overflow-hidden">
                             <img
                               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/uploadedFiles/${item.files}`}
                               alt="thumbnail product"
-                              className="object-cover h-full w-full"
                             />
                           </div>
                           <div className="text" title={item.name}>
