@@ -49,15 +49,15 @@ export default function CommentSection({ postId }: { postId: any }) {
       // },
     })) as any;
     if (res.data && res.data.result) {
-      const result = await Promise.all(
-        res.data.result?.map(async (x: any) => {
-          return {
-            ...x,
-            content: await clean(x.content),
-          };
-        })
-      );
-      setComments({ ...res.data, result: result });
+      // const result = await Promise.all(
+      //   res.data.result?.map(async (x: any) => {
+      //     return {
+      //       ...x,
+      //       content: await clean(x.content),
+      //     };
+      //   })
+      // );
+      setComments({ ...res.data });
     } else message.info(res.message);
   };
 

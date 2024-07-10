@@ -22,7 +22,6 @@ export const useFilter = () => {
   }, []);
   const customFilter = new Filter({
     list: list,
-    splitRegex: /(?:(?<= )|(?= )|(?<=<)|(?=<)|(?<=>)|(?=>)|(?<=&)|(?=&))/g,
   });
   return customFilter;
 };

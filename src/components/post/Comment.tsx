@@ -1,6 +1,7 @@
 "use client";
 
 import { sendRequest } from "@/utils/api";
+import { useFilter } from "@/utils/customHooks";
 import { message } from "antd";
 import { Button, Textarea } from "flowbite-react";
 import { useSession } from "next-auth/react";
@@ -8,6 +9,7 @@ import { useState } from "react";
 
 export default function Comment({ comment, onDelete, getComments }: any) {
   const { data: session } = useSession();
+  const filter = useFilter();
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
@@ -89,7 +91,9 @@ export default function Comment({ comment, onDelete, getComments }: any) {
           </>
         ) : (
           <>
-            <p className="text-gray-500 pb-2">{comment.content}</p>
+            <p className="text-gray-500 pb-2">
+              {filter.clean(comment.content)}
+            </p>
             <div className="flex items-center pt-2 text-xs border-t dark:border-gray-700 max-w-fit gap-2">
               {/* <button
                 type="button"
